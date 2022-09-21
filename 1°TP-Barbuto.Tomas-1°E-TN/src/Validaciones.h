@@ -14,6 +14,7 @@ void cargarCostos(float *costoHospedaje, float *acumuladorHospedaje, float *cost
 int validarRango(int numero, int maximo, int minimo);
 int cargarJugador(int *numeroDeCamiseta, int *posicionJugador, int *arqueros, int *defensores, int *mediocampistas, int *delanteros);
 void cargarConfederacion(int *uefa, int *conmebol, int *concacaf,int *afc, int *ofc, int *caf, int *totalJugadores);
+
 #endif /* VALIDACIONES_H_ */
 
 

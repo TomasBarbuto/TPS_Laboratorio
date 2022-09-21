@@ -35,20 +35,22 @@ int main(void) {
 	float costoTransporte = 0;
 	float costoTotal;
 	float costoConRecargo;
-	float recargoUefa;
 	float acumuladorHospedaje = 0;
 	float acumuladorComida = 0 ;
 	float acumuladorTransporte = 0;
+	float recargoUefa;
 
 
 	do {
+
 		mostrarMenu(&menu, acumuladorHospedaje, acumuladorComida, acumuladorTransporte, arqueros, defensores,mediocampistas,delanteros);
 
 		switch(menu){
 
 		case 1:
-				cargarCostos(&costoHospedaje, &acumuladorHospedaje, &costoComida, &acumuladorComida, &costoTransporte, &acumuladorTransporte);
-				flagCostos = 1;
+
+			cargarCostos(&costoHospedaje, &acumuladorHospedaje, &costoComida, &acumuladorComida, &costoTransporte, &acumuladorTransporte);
+			flagCostos = 1;
 
 			break;
 
@@ -57,6 +59,7 @@ int main(void) {
 				{
 
 					printf("Ya tenes 22 jugadores cargados\n");
+					system("pause");
 
 				}
 				else
@@ -73,7 +76,7 @@ int main(void) {
 
 		case 3:
 
-			if(totalJugadores > 0 && flagCostos == 1){
+			if(totalJugadores > 0 && flagCostos == 1 && costoHospedaje != 0 && costoTransporte != 0 && costoComida != 0){
 
 				costoTotal = costoTransporte + costoComida + costoHospedaje;
 				promedioUefa = calcularPromedio(uefa, totalJugadores);
@@ -90,11 +93,14 @@ int main(void) {
 
 				flagCalculos = 1;
 
-				printf("Se han realizado los calculos con exito\n");
+				printf("tSe han realizado los calculos con exito\n");
+				system("pause");
 
 			}else{
 
 				printf("Debe completar los campos anteriores\n");
+				system("pause");
+
 
 			}
 			break;
@@ -119,11 +125,16 @@ int main(void) {
 			}else{
 
 				printf("Primero debe realizar los calculos\n");
+				system("pause");
 			}
+			break;
+
+		case 5:
 			break;
 
 		default:
 			printf("Ingrese una opcion valida\n");
+			system("pause");
 			break;
 		}
 
@@ -132,7 +143,9 @@ int main(void) {
 		}while(menu != 5);
 
 	if(menu == 5){
+
 		printf("Usted a salido del menu\n");
+
 	}
 
 	return 0;

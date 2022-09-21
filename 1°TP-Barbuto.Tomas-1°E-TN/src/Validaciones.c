@@ -2,14 +2,15 @@
 #include <stdlib.h>
 
 
+
 /**
  * \Brief Ingresa numero y rango del mismo
  * \param Valida si el numero esta en rango
  * \return (0) para verdadero o (-1) para falso
  */
 
-float calcularPromedio(int multiplicador, int divisor)
-{
+float calcularPromedio(int multiplicador, int divisor){
+
 	float promedio;
 
 	promedio = (float)(multiplicador * 100) / divisor;
@@ -19,8 +20,7 @@ float calcularPromedio(int multiplicador, int divisor)
 
 void mostrarMenu(int *menu, float acumuladorHospedaje, float acumuladorComida, float acumuladorTransporte, int arqueros, int defensores, int mediocampistas, int delanteros){
 
-
-	printf("\nBievenido al menu de la seleccion\n"
+			printf("\nBievenido al menu de la seleccion\n"
 					"1-Ingreso de costos de mantenimiento\n"
 					"\tCosto de hospedaje -> $ %.2f\n"
 					"\tCosto de Comida -> $ %.2f\n"
@@ -41,7 +41,7 @@ void cargarCostos(float *costoHospedaje, float *acumuladorHospedaje, float *cost
 
 	int subMenuCostos;
 
-	printf("Ingreso de los costos de mantenimiento\n"
+					printf("Ingreso de los costos de mantenimiento\n"
 							"1- Costo de Hospedaje\n"
 							"2- Costo de Comida\n"
 							"3- Costo de Transporte\n"
@@ -76,7 +76,6 @@ void cargarCostos(float *costoHospedaje, float *acumuladorHospedaje, float *cost
 					printf("Ingrese una opcion valida\n");
 					break;
 				}
-
 
 }
 
@@ -159,8 +158,7 @@ int cargarJugador(int numeroDeCamiseta, int posicionJugador, int *arqueros, int 
 	return retorno;
 }
 
-void cargarConfederacion(int *uefa, int *conmebol, int *concacaf, int *afc, int *ofc, int *caf, int *totalJugadores)
-{
+void cargarConfederacion(int *uefa, int *conmebol, int *concacaf, int *afc, int *ofc, int *caf, int *totalJugadores){
 
 	int confederacion;
 
@@ -213,27 +211,10 @@ void cargarConfederacion(int *uefa, int *conmebol, int *concacaf, int *afc, int 
 				break;
 			}
 		}
-		else
-		{
+		else{
+
 			printf("Ingrese un valor valido");
 		}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
