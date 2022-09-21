@@ -12,19 +12,25 @@
 *
 */
 
-float calcularPromedio(float *pResultado, int multiplicador, int divisor){
+int calcularPromedio(float *pResultado, int multiplicador, int divisor){
 
 	float promedio;
+	int retorno = 0;
 
-	promedio = (float)(multiplicador * 100) / divisor;
+	if(pResultado != NULL && divisor != 0){
+		promedio = (float)(multiplicador * 100) / divisor;
 
-	*pResultado = promedio;
+		*pResultado = promedio;
+		retorno = 1;
 
-	return promedio;
+	}
+
+	return retorno;
 }
+//cambiar los acum por count y ordenar los parametros
 
-void mostrarMenu(int *menu, float acumuladorHospedaje, float acumuladorComida, float acumuladorTransporte,
-				int arqueros, int defensores, int mediocampistas, int delanteros){
+void mostrarMenu(int *menu, float acumuladorUno, float acumuladorDos, float acumuladorTres,
+				int posicionUno, int posicionDos, int posicionTres, int posicionCuatro){
 
 	printf("\nBievenido al menu de la seleccion\n"
 			"1-Ingreso de costos de mantenimiento\n"
@@ -38,8 +44,8 @@ void mostrarMenu(int *menu, float acumuladorHospedaje, float acumuladorComida, f
 			"\tDelanteros -> %d\n"
 			"3-Realizar todos los calculos\n"
 			"4-Informar todos los resultados\n"
-			"5-Salir\n",acumuladorHospedaje, acumuladorComida, acumuladorTransporte,
-			arqueros, defensores,mediocampistas,delanteros);
+			"5-Salir\n",acumuladorUno, acumuladorDos, acumuladorTres,
+			posicionUno, posicionDos, posicionTres, posicionCuatro);
 
 	scanf("%d",menu);
 
@@ -52,8 +58,8 @@ void mostrarMenu(int *menu, float acumuladorHospedaje, float acumuladorComida, f
 *
 */
 
-void cargarCostos(float *costoHospedaje, float *acumuladorHospedaje, float *costoComida,
-				float *acumuladorComida, float *costoTransporte, float *acumuladorTransporte){
+void cargarCostos(float *pCostoUno, float *pAcumuladorUno, float *pCostoDos,
+				float *pAcumuladorDos, float *pCostoTres, float *pAcumuladorTres){
 
 	int subMenuCostos;
 
@@ -72,18 +78,18 @@ void cargarCostos(float *costoHospedaje, float *acumuladorHospedaje, float *cost
 	case 1:
 
 		printf("Ingrese el costo de hospedaje: ");
-		scanf("%f", costoHospedaje);
+		scanf("%f", pCostoUno);
 
-		*acumuladorHospedaje += *costoHospedaje;
+		*pAcumuladorUno += *pCostoUno;
 
 		break;
 
 	case 2:
 
 		printf("Ingrese el costo de Comida: ");
-		scanf("%f", costoComida);
+		scanf("%f", pCostoDos);
 
-		*acumuladorComida += *costoComida;
+		*pAcumuladorDos += *pCostoDos;
 
 		break;
 
@@ -91,9 +97,9 @@ void cargarCostos(float *costoHospedaje, float *acumuladorHospedaje, float *cost
 	case 3:
 
 		printf("Ingrese el costo de Transportes: ");
-		scanf("%f", costoTransporte);
+		scanf("%f", pCostoTres);
 
-		*acumuladorTransporte += *costoTransporte;
+		*pAcumuladorTres += *pCostoTres;
 
 		break;
 

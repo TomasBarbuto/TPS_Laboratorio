@@ -117,7 +117,7 @@ int main(void){
 			}
 			break;
 
-		case 5:
+		case 5: //Sale del menu y finaliza el programa.
 
 			break;
 
