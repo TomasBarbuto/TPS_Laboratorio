@@ -1,22 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "Validaciones.h"
+#include "Calculos.h"
+#include "Mostrar.h"
 
 int main(void){
 	setbuf(stdout, NULL);
 
 	int menu;
-	int uefa = 0;
+	int uefa = 0; //contador de jugadores que son de uefa
 	float promedioUefa;
-	int conmebol = 0;
+	int conmebol = 0; //contador de jugadores que son de conmebol
 	float promedioConmebol;
-	int concacaf = 0;
+	int concacaf = 0; //contador de jugadores que son de concacaf
 	float promedioConcacaf;
-	int afc = 0;
+	int afc = 0;	//contador de jugadores que son de afc
 	float promedioAfc;
-	int ofc = 0;
+	int ofc = 0;	//contador de jugadores que son de ofc
 	float promedioOfc;
-	int caf = 0;
+	int caf = 0;	//contador de jugadores que son de caf
 	float promedioCaf;
 	int arqueros = 0 ;
 	int defensores = 0;
@@ -29,7 +31,7 @@ int main(void){
 	float costoComida = 0;
 	float costoTransporte = 0;
 	float costoTotal;
-	float costoConRecargo;
+	float costoConRecargo; //si llegase a haber mas jugadoes de uefa en el promedio se aplicara sino queda obsoleta.
 	float acumuladorHospedaje = 0;
 	float acumuladorComida = 0 ;
 	float acumuladorTransporte = 0;

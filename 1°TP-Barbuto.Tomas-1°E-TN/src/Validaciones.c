@@ -1,60 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-
+#include "validaciones.h"
 
 /**
-*\brief: Solicita dos numeros al usuario, para realizar el calculo promedio
-		 y pasarlo por puntero.
-
-*\parammensajeEselmensajeasermostrado
-*\returnElnúmeroingresadoporelusuario
+*\brief: contiene un subMenu el cual modificara el acumulador seleccionado.
 *
-*/
-
-int calcularPromedio(float *pResultado, int multiplicador, int divisor){
-
-	float promedio;
-	int retorno = 0;
-
-	if(pResultado != NULL && divisor != 0){
-		promedio = (float)(multiplicador * 100) / divisor;
-
-		*pResultado = promedio;
-		retorno = 1;
-
-	}
-
-	return retorno;
-}
-//cambiar los acum por count y ordenar los parametros
-
-void mostrarMenu(int *menu, float acumuladorUno, float acumuladorDos, float acumuladorTres,
-				int posicionUno, int posicionDos, int posicionTres, int posicionCuatro){
-
-	printf("\nBievenido al menu de la seleccion\n"
-			"1-Ingreso de costos de mantenimiento\n"
-			"\tCosto de hospedaje -> $ %.2f\n"
-			"\tCosto de Comida -> $ %.2f\n"
-			"\tCosto de Transporte -> $ %.2f\n"
-			"2-Carga de Jugadores\n"
-			"\tArqueros -> %d\n"
-			"\tDefensores -> %d\n"
-			"\tMediocentro -> %d\n"
-			"\tDelanteros -> %d\n"
-			"3-Realizar todos los calculos\n"
-			"4-Informar todos los resultados\n"
-			"5-Salir\n",acumuladorUno, acumuladorDos, acumuladorTres,
-			posicionUno, posicionDos, posicionTres, posicionCuatro);
-
-	scanf("%d",menu);
-
-}
-
-/**
-*\briefSolicitaunnúmeroalusuarioydevuelveelresultado
-*\parammensajeEselmensajeasermostrado
-*\returnElnúmeroingresadoporelusuario
+*\param: seis punteros a flotantes que tomaran un valor segun la opcion indicada.
+*
+*\return: VOID
 *
 */
 
@@ -63,285 +16,307 @@ void cargarCostos(float *pCostoUno, float *pAcumuladorUno, float *pCostoDos,
 
 	int subMenuCostos;
 
+	if(pCostoUno != NULL && pCostoDos != NULL && pCostoTres != NULL &&
+	   pAcumuladorUno != NULL && pAcumuladorDos != NULL && pAcumuladorTres != NULL){
 		printf("Ingreso de los costos de mantenimiento\n"
 				"1- Costo de Hospedaje\n"
 				"2- Costo de Comida\n"
 				"3- Costo de Transporte\n"
 				"Valor: ");
 
-		scanf("%d", &subMenuCostos);
+		getNumber(&subMenuCostos,"Opcion: " , "No ingreso un valor valido\n", 1, 3);
 
 		//mostrar submenu
 
-	switch (subMenuCostos){ //cargarCostos..
+		switch (subMenuCostos){ //cargarCostos..
 
-	case 1:
+		case 1:
 
-		printf("Ingrese el costo de hospedaje: ");
-		scanf("%f", pCostoUno);
+			printf("Ingrese el costo de hospedaje: ");
+			getFloat(pCostoUno,"$" , "No ingreso un valor valido \n", 1, 9999999);
 
-		*pAcumuladorUno += *pCostoUno;
+			*pAcumuladorUno += *pCostoUno;
 
-		break;
+			break;
 
-	case 2:
+		case 2:
 
-		printf("Ingrese el costo de Comida: ");
-		scanf("%f", pCostoDos);
+			printf("Ingrese el costo de Comida: ");
+			getFloat(pCostoDos,"$" , "No ingreso un valor valido \n", 1, 9999999);
 
-		*pAcumuladorDos += *pCostoDos;
+			*pAcumuladorDos += *pCostoDos;
 
-		break;
+			break;
 
 
-	case 3:
+		case 3:
 
-		printf("Ingrese el costo de Transportes: ");
-		scanf("%f", pCostoTres);
+			printf("Ingrese el costo de Transportes: ");
+			getFloat(pCostoTres,"$" , "No ingreso un valor valido \n", 1, 9999999);
 
-		*pAcumuladorTres += *pCostoTres;
+			*pAcumuladorTres += *pCostoTres;
 
-		break;
+			break;
 
-	default:
-
-		printf("Ingrese una opcion valida\n");
-
-		break;
+		}
 	}
-	//void no retorna nada.
+
 }
 
 /**
-*\briefSolicitaunnúmeroalusuarioydevuelveelresultado
-*\parammensajeEselmensajeasermostrado
-*\returnElnúmeroingresadoporelusuario
+*\brief: Contiene una llave la cual segun se elija sumara 1 al puntero seleccionado.
+*
+*\param: 4 punteros a enteros, para modificar contadores.
+*\
+*\return: Retorna 1 si cargo con exito y 0 si hubo algun error.
 *
 */
 
-int validarRango(int numero, int maximo, int minimo){
-
-	int retorno;
-
-	if(numero >= minimo && numero <= maximo){
-
-		retorno = 1;
-
-	}else{
-
-		retorno = 0;
-
-	}
-
-	return retorno;
-}
-
-/**
-*\briefSolicitaunnúmeroalusuarioydevuelveelresultado
-*\parammensajeEselmensajeasermostrado
-*\returnElnúmeroingresadoporelusuario
-*
-*/
-
-int cargarJugador(int *posicionUno, int *posicionDos, int *posicionTres, int *posicionCuatro){
+int cargarJugador(int *pPosicionUno, int *pPosicionDos, int *pPosicionTres, int *pPosicionCuatro){
 
 	int retorno = 0;
 	int numero;
 	int llave;
 
-	printf("Ingrese lo datos correspondientes para cada jugador\n"
-					   "Ingrese numero de camiseta: ");
+	if(pPosicionUno != NULL && pPosicionDos != NULL && pPosicionTres != NULL && pPosicionCuatro != NULL){
 
-	scanf("%d", &numero);
+		printf("Ingrese lo datos correspondientes para cada jugador\n");
 
-	printf("Ingrese posicion del jugador\n"
-			"1- Arquero\n"
-			"2- Defensor\n"
-			"3- Mediocentro\n"
-			"4- Delantero\n"
-			"Valor: ");
+		getNumber(&numero,"Numero de camiseta:  " , "Ingrese un numero de 1 a 22\n", 1, 22);
 
-	scanf("%d", &llave);
+		printf("Ingrese posicion del jugador\n"
+				"1- Arquero\n"
+				"2- Defensor\n"
+				"3- Mediocentro\n"
+				"4- Delantero\n");
 
-	switch(llave){
+		getNumber(&llave ,"Opcion: " , "No ingreso un valor valido\n", 1, 4);
 
-	case 1:
+		switch(llave){
 
-		if(*posicionUno == 2){
+		case 1:
 
-			printf("Ya no hay lugares para arqueros\n");
-			system("pause");
+			if(*pPosicionUno == 2){
 
-		}else{
+				printf("Ya no hay lugares para arqueros\n");
+				system("pause");
 
-			*posicionUno = *posicionUno + 1;
-			retorno = 1;
+			}else{
 
+				(*pPosicionUno)++;
+				retorno = 1;
+
+			}
+
+			break;
+
+		case 2:
+
+			if(*pPosicionDos == 8){
+
+				printf("Ya no hay lugares para defensores\n");
+				system("pause");
+
+			}else{
+
+				(*pPosicionDos)++;
+				retorno = 1;
+
+			}
+			break;
+
+		case 3:
+
+			if(*pPosicionTres == 8){
+
+				printf("Ya no hay lugares para mediocampistas\n");
+				system("pause");
+
+			}else{
+
+				(*pPosicionTres)++;
+				retorno = 1;
+
+			}
+
+			break;
+
+		case 4:
+
+			if(*pPosicionCuatro == 4){
+
+				printf("Ya no hay lugares para delanteros\n");
+				system("pause");
+
+			}else{
+
+				(*pPosicionCuatro)++;
+				retorno = 1;
+			}
+
+			break;
 		}
+	}
+	return retorno;
+}
 
-		break;
+/**
+*\brief: 6 contadores declarados como puntero a int, segun el valor elegido aumentara su valor en 1.
+*\
+*\param: 6 punteros a int para 6 opciones.
+*\
+*\return: Retorna 1 si cargo con exito y 0 si hubo algun error.
+*
+*/
 
-	case 2:
+int cargarConfederacion(int *pContadorUno, int *pContadorDos, int *pContadorTres,
+						int *pContadorCuatro, int *pContadorCinco, int *pContadorSeis, int *pCantidadTotal){
+	int retorno = 0;
+	int confederacion;
 
-		if(*posicionDos == 8){
+	if(pContadorUno != NULL && pContadorDos != NULL && pContadorTres != NULL && pContadorCuatro != NULL &&
+	   pContadorCinco != NULL && pContadorSeis != NULL && pCantidadTotal != NULL){
 
-			printf("Ya no hay lugares para defensores\n");
-			system("pause");
+		printf("Ingrese la confederacion correspondiente\n"
+				"1- UEFA\n"
+				"2- CONMEBOL\n"
+				"3- CONCACAF\n"
+				"4- AFC\n"
+				"5- OFC\n"
+				"6- CAF\n");
 
-		}else{
+		getNumber(&confederacion,"Opcion: " , "No ingreso un valor valido\n", 1, 6);
 
-			*posicionDos = *posicionDos + 1;
-			retorno = 1;
+			switch(confederacion){
 
-		}
-		break;
+			case 1:
 
-	case 3:
+				(*pContadorUno)++;
+				retorno = 1;
+				break;
 
-		if(*posicionTres == 8){
+			case 2:
 
-			printf("Ya no hay lugares para mediocampistas\n");
-			system("pause");
+				(*pContadorDos)++;
+				retorno = 1;
+				break;
 
-		}else{
+			case 3:
 
-			*posicionTres = *posicionTres + 1;
-			retorno = 1;
+				(*pContadorTres)++;
+				retorno = 1;
+				break;
 
-		}
+			case 4:
 
-		break;
+				(*pContadorCuatro)++;
+				retorno = 1;
+				break;
 
-	case 4:
+			case 5:
 
-		if(*posicionCuatro == 4){
+				(*pContadorCinco)++;
+				retorno = 1;
+				break;
 
-			printf("Ya no hay lugares para delanteros\n");
-			system("pause");
+			case 6:
 
-		}else{
+				(*pContadorSeis)++;
+				retorno = 1;
+				break;
 
-			*posicionCuatro = *posicionCuatro + 1;
-			retorno = 1;
-		}
+			}
 
-		break;
+			*pCantidadTotal = *pContadorUno + *pContadorDos + *pContadorTres +
+							*pContadorCuatro + *pContadorCinco + *pContadorSeis;
 
-	default:
+	}
+	return retorno;
+}
 
-		printf("Ingrese una posicion valida\n");
-		system("pause");
+/**
+*\brief: Pide un numero y valida que este dentro de un rango y que sea un numero.
+*\
+*\param: valor ingresado puntero a int, mensaje , error, rango minimo, rango maximo.
+*\
+*\return: Retorna 1 si cargo con exito y 0 si hubo algun error.
+*
+*/
 
-		break;
 
+int getNumber(int *pResultado, char *mensaje, char *mensajeError, int minimo,
+		int maximo) {
+
+	int retorno = 0;
+	int bufferInt; //Con esto interactuamos con el usuario.
+
+	if (pResultado != NULL && mensaje != NULL && mensajeError != NULL
+			&& minimo < maximo) {
+
+		do {
+
+			printf("%s", mensaje);
+			fflush(stdin);
+			scanf("%d", &bufferInt);
+
+			if (bufferInt >= minimo && bufferInt <= maximo) {
+
+				*pResultado = bufferInt;
+				retorno = 1;
+				break;
+
+			} else {
+
+				printf("%s", mensajeError);
+
+			}
+
+		} while (retorno == 0);
 	}
 
 	return retorno;
 }
 
 /**
-*\briefSolicitaunnúmeroalusuarioydevuelveelresultado
-*\parammensajeEselmensajeasermostrado
-*\returnElnúmeroingresadoporelusuario
+*\brief: Pide un numero flotante y valida que este dentro de un rango y que sea un numero.
+*\
+*\param: valor ingresado puntero a float, mensaje , error, rango minimo, rango maximo.
+*\
+*\return: Retorna 1 si cargo con exito y 0 si hubo algun error.
 *
 */
 
-void cargarConfederacion(int *pContadorUno, int *pContadorDos, int *pContadorTres,
-						int *pContadorCuatro, int *pContadorCinco, int *pContadorSeis, int *pCantidadTotal){
+int getFloat(float *pResultado, char *mensaje, char *mensajeError, float minimo,
+		float maximo) {
 
-	int confederacion;
+	int retorno = 0;
+	float buffer; //Con esto interactuamos con el usuario.
 
-	printf("Ingrese la confederacion correspondiente\n"
-			"1- UEFA\n"
-			"2- CONMEBOL\n"
-			"3- CONCACAF\n"
-			"4- AFC\n"
-			"5- OFC\n"
-			"6- CAF\n"
-			"Valor: ");
+	if (pResultado != NULL && mensaje != NULL && mensajeError != NULL
+			&& minimo < maximo) {
 
-	scanf("%d", &confederacion);
+		do {
 
-	if(validarRango(confederacion, 6, 1)){
+			printf("%s", mensaje);
+			fflush(stdin);
+			scanf("%f", &buffer);
 
-		switch(confederacion){
+			if (buffer >= minimo && buffer <= maximo) {
 
-		case 1:
+				*pResultado = buffer;
+				retorno = 1;
+				break;
 
-			*pContadorUno = *pContadorUno + 1;
-			break;
+			} else {
 
-		case 2:
+				printf("%s", mensajeError);
 
-			*pContadorDos = *pContadorDos + 1;
-			break;
+			}
 
-		case 3:
-
-			*pContadorTres = *pContadorTres + 1;
-			break;
-
-		case 4:
-
-			*pContadorCuatro = *pContadorCuatro + 1;
-			break;
-
-		case 5:
-
-			*pContadorCinco = *pContadorCinco + 1;
-			break;
-
-		case 6:
-
-			*pContadorSeis = *pContadorSeis + 1;
-			break;
-
-		}
-
-		*pCantidadTotal = *pContadorUno + *pContadorDos + *pContadorTres +
-						*pContadorCuatro + *pContadorCinco + *pContadorSeis;
-
-	}else{
-
-		printf("Ingrese un valor valido");
-		system("pause");
-
+		} while (retorno == 0);
 	}
 
-}
-
-/**
-*\brief: Muestra por consola los resultados obtenidos, y verifica si el pPromedioUno es mayoritario
-*		 agregandole recargo de %35.
-*\param:
-*\return Void
-*
-*/
-
-void mostrarResultados(float *pPromedioUno, float *pPromedioDos, float *pPromedioTres, float *pPromedioCuatro,
-					float *pPromedioCinco, float *pPromedioSeis, float *pCostoTotal, float *pRecargo, float *pCostoRecargo){
-
-	printf("Porcentaje Uefa: %.2f\n"
-			"Porcentaje Conmebol: %.2f\n"
-			"Porcentaje Concacaf: %.2f\n"
-			"Porcentaje Afc: %.2f\n"
-			"Porcentaje Ofc: %.2f\n"
-			"Porcentaje Caf: %.2f\n", *pPromedioUno, *pPromedioDos
-			, *pPromedioTres, *pPromedioCuatro, *pPromedioCinco, *pPromedioSeis);
-
-	if(*pPromedioUno >= 50){
-
-		printf("El costo de mantenimiento era de $%.2f y recibio un aumento de $%.2f,"
-				" su nuevo valor es de: $%.2f\n", *pCostoTotal, *pRecargo, *pCostoRecargo);
-
-	}else{
-
-		printf("El costo de mantenimiento es: $%.2f\n", *pCostoTotal);
-
-	}
-
-		system("pause"); // pulse un tecla para continuar...
-
+	return retorno;
 }
 
 
