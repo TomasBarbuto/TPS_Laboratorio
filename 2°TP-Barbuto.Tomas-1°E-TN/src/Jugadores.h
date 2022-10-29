@@ -25,10 +25,15 @@ typedef struct{
 int inicializarJugadores(eJugador Jugadores[], int longitud);
 int idJugador();
 int buscarVacioJugadores(eJugador Jugadores[], int longitud);
-void mostrarDato(eJugador Jugadores);
-int darAltaJugador(eJugador arrayJugadores[], eConfederacion arrayConfederaciones[], int longitudJugadores, int longitudConfederaciones);
+int mostrarDatoJugador(eJugador arrayJugadores, eConfederacion arrayConfederacion[], int longitudConfederacion);
+int darAltaJugador(eJugador arrayJugadores[], eConfederacion arrayConfederaciones[], int longitudJugadores,
+					int longitudConfederaciones);
 int validarExistenciaDeJugador(eJugador arrayJugadores[], int longitud, int id);
-int listarJugadores(eJugador arrayJugadores[], int longitud);
-int darBajaJugador(eJugador arrayJugadores[], int longitud);
+int listarJugadores(eJugador arrayJugadores[], int longitudJugadores, eConfederacion arrayConfederaciones[],
+					int longitudConfederaciones);
+int darBajaJugador(eJugador arrayJugadores[], int longitudJugadores, eConfederacion arrayConfederaciones[],
+					int longitudConfederaciones);
+int modificarJugador(eJugador arrayJugadores[], eConfederacion arrayConfederaciones[], int longitudJugadores,
+					 int longitudConfederaciones);
 
 #endif /* JUGADORES_H_ */

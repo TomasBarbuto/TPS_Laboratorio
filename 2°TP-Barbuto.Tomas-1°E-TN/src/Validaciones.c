@@ -6,7 +6,7 @@
 
 /**
 *\brief: Pide un numero y valida que sea int y que este dentro de un rango
-*\param: puntero a int , array de char , array de char, rango minimo, rango maximo.
+*\param: puntero a int , array de char , array de char, rango minimo, rango maximo,
 *\return: Retorna 1 si cargo con exito y 0 si hubo algun error.
 **/
 
