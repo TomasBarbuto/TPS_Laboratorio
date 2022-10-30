@@ -35,16 +35,21 @@ int mostrarMenu(eConfederacion arrayConfederaciones[], eJugador arrayJugadores[]
 				switch(opcion){
 
 				case 1:
-					if(darAltaJugador(arrayJugadores, arrayConfederaciones,longitudJugadores,
-							longitudConfederacion)){
+					if(cantidadJugadores < 3000){
 
-						cantidadJugadores++;
-						printf("\nEl jugador se dio de ALTA correctamente!!\n");
+						if(darAltaJugador(arrayJugadores, arrayConfederaciones,longitudJugadores,
+								longitudConfederacion)){
+
+							cantidadJugadores++;
+							printf("\nEl jugador se dio de ALTA correctamente!!\n");
+						}else{
+
+							printf("\nOcurrio un error, llame al departamento de sistemas\n");
+						}
 					}else{
 
-						printf("\nOcurrio un error, llame al departamento de sistemas\n");
+						printf("Ya no hay espacio para cargar mas jugadores\n");
 					}
-
 					system("pause");
 					break;
 

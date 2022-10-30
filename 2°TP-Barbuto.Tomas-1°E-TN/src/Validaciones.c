@@ -10,8 +10,7 @@
 *\return: Retorna 1 si cargo con exito y 0 si hubo algun error.
 **/
 
-int getNumber(int *pResultado, char *mensaje, char *mensajeError, int minimo,
-		int maximo) {
+int getNumber(int *pResultado, char *mensaje, char *mensajeError, int minimo, int maximo) {
 
 	int retorno = 0;
 	int bufferInt; //Con esto interactuamos con el usuario.
@@ -50,8 +49,7 @@ int getNumber(int *pResultado, char *mensaje, char *mensajeError, int minimo,
 *\return: Retorna 1 si cargo con exito y 0 si hubo algun error.
 **/
 
-int getFloat(float *pResultado, char *mensaje, char *mensajeError, float minimo,
-		float maximo) {
+int getFloat(float *pResultado, char *mensaje, char *mensajeError, float minimo, float maximo) {
 
 	int retorno = 0;
 	float buffer; //Con esto interactuamos con el usuario.
@@ -126,8 +124,7 @@ int getString(char pResultado[], char *mensaje, char *mensajeError, int EspacioC
 	return retorno;
 }
 
-int getShort(short *pResultado, char *mensaje, char *mensajeError, short minimo,
-		short maximo) {
+int getShort(short *pResultado, char *mensaje, char *mensajeError, short minimo, short maximo) {
 
 	int retorno = 0;
 	short buffer; //Con esto interactuamos con el usuario.
