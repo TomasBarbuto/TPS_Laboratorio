@@ -229,7 +229,7 @@ int validarExistenciaDeSeleccion(LinkedList* pArrayListaSelecciones, int idParam
 
 /**
  * \brief obtiene el string del nombre de la confederacion a la que pertenece cada seleccion.
- * \param
+ * \param linkedList* pArrayListSeleccion, int, puntero a char.
  * \return int 1 Bien, 0 ERROR.
 **/
 int buscarNombreDeConfederacion(LinkedList *pArrayListSeleccion, int idSeleccion, char pConfederacion[]){
@@ -262,7 +262,11 @@ int buscarNombreDeConfederacion(LinkedList *pArrayListSeleccion, int idSeleccion
 }
 
 
-///**
+/**
+ * \brief obtiene el string del nombre de la seleccion segun el id.
+ * \param linkedList* pArrayListSeleccion, int, puntero a char.
+ * \return int 1 Bien, 0 ERROR.
+**/
 int buscarNombreDeSeleccion(LinkedList *pArrayListSeleccion, int idSeleccion, char pSeleccion[]){
 
 	int retorno = 0;
@@ -293,22 +297,33 @@ int buscarNombreDeSeleccion(LinkedList *pArrayListSeleccion, int idSeleccion, ch
 	return retorno;
 }
 
-int selec_ordenarPorConfederacion(void* elementoA, void* elementoB)
-{
+/**
+ * \brief selecciona dos punteros y evalua cual es mayor.
+ * \param puntero a void, puntero a void
+ * \return int, 1 bien, 0 ERROR.
+**/
+int selec_ordenarPorConfederacion(void* elementoA, void* elementoB){
 	int retorno = 0;
+	char confederacionA[30];
+	char confederacionB[30];
 	Seleccion* auxSeleccionA;
 	Seleccion* auxSeleccionB;
 
 	auxSeleccionA = (Seleccion*)elementoA;
 	auxSeleccionB = (Seleccion*)elementoB;
 
-	 if(stricmp(auxSeleccionA->confederacion, auxSeleccionB->confederacion) > 0 )
-	    {
-	        retorno = 1;
-	    }
-	    else if(stricmp(auxSeleccionA->confederacion, auxSeleccionB->confederacion) < 0)
-	    {
-	        retorno = -1;
-	    }
+	if(selec_getConfederacion(auxSeleccionA, confederacionA)
+	&& selec_getConfederacion(auxSeleccionB, confederacionB)){
+
+		if(stricmp(confederacionA, confederacionB) > 0 ){
+
+			retorno = 1;
+
+		}else if(stricmp(confederacionA, confederacionB) < 0){
+
+			retorno = -1;
+		}
+	}
 	 return retorno;
 }
+

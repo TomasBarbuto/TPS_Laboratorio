@@ -430,8 +430,13 @@ int imprimirJugadorSeleccion(LinkedList* pArrayListaJugadores, LinkedList* pArra
 	return retorno;
 }
 
-int jug_ordenarPorNacionalidad(void* elementoA, void* elementoB)
-{
+/**
+ * \brief selecciona dos punteros y evalua cual es mayor.
+ * \param puntero a void, puntero a void
+ * \return int, 1 bien, 0 ERROR.
+**/
+int jug_ordenarPorNacionalidad(void* elementoA, void* elementoB){
+
 	int retorno = 0;
 	char nacionalidadA[30];
 	char nacionalidadB[30];
@@ -455,8 +460,13 @@ int jug_ordenarPorNacionalidad(void* elementoA, void* elementoB)
 	 return retorno;
 }
 
-int jug_ordenarPorNombre(void* elementoA, void* elementoB)
-{
+/**
+ * \brief selecciona dos punteros y evalua cual es mayor.
+ * \param puntero a void, puntero a void
+ * \return int, 1 bien, 0 ERROR.
+**/
+int jug_ordenarPorNombre(void* elementoA, void* elementoB){
+
 	int retorno = 0;
 	char auxNombreA[100];
 	char auxNombreB[100];
@@ -480,8 +490,13 @@ int jug_ordenarPorNombre(void* elementoA, void* elementoB)
 	return retorno;
 }
 
-int jug_ordenarPorEdad(void* elementoA, void* elementoB)
-{
+/**
+ * \brief selecciona dos punteros y evalua cual es mayor.
+ * \param puntero a void, puntero a void
+ * \return int, 1 bien, 0 ERROR.
+**/
+int jug_ordenarPorEdad(void* elementoA, void* elementoB){
+
 	int retorno = 0;
 	int edadA;
 	int edadB;
