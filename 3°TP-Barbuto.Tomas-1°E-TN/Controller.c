@@ -917,6 +917,7 @@ int controller_ListarConvocados(LinkedList* pArrayListJugador, LinkedList* pArra
 	int retorno = 0;
 	Jugador* Jugadores = NULL;
 	int convocado;
+	int contador = 0;
 
 	if(pArrayListJugador != NULL && pArrayListSeleccion != NULL){
 		retorno = 1;
@@ -931,7 +932,7 @@ int controller_ListarConvocados(LinkedList* pArrayListJugador, LinkedList* pArra
 			if(Jugadores != NULL){
 
 				if(jug_getIdSeleccion(Jugadores, &convocado) && convocado != 0){
-
+					contador++;
 					if(!imprimirJugadorSeleccion(pArrayListJugador, pArrayListSeleccion, i)){
 
 							retorno = 0;
@@ -939,6 +940,11 @@ int controller_ListarConvocados(LinkedList* pArrayListJugador, LinkedList* pArra
 					}
 				}
 			}
+		}
+		if(contador == 0){
+
+			printf("NO HAY JUGADORES CONVOCADOS HASTA EL MOMENTO\n");
+			system("Pause");
 		}
 	}
 
