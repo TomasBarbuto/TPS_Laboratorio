@@ -160,7 +160,6 @@ int selec_getConvocados(Seleccion* this, int* convocados){
 		*convocados = this->convocados;
 		retorno = 1;
 	}
-
 	return retorno;
 }
 
@@ -181,18 +180,20 @@ int imprimirSeleccion(LinkedList* pArrayListaSelecciones, int index){
 
 	if(pArrayListaSelecciones != NULL && index >= 0 && index < ll_len(pArrayListaSelecciones)){
 
-		unaSeleccion = ll_get(pArrayListaSelecciones, index);
+		unaSeleccion = (Seleccion*) ll_get(pArrayListaSelecciones, index);
 
-		if(selec_getId(unaSeleccion, &auxId)
-		&& selec_getConvocados(unaSeleccion, &auxConvocados)
-		&& selec_getConfederacion(unaSeleccion, auxConfederacion)
-		&& selec_getPais(unaSeleccion, auxPais)){
+		if(unaSeleccion != NULL){
 
-			printf("|%10d | %25s | %10d | %20s |\n", auxId, auxConfederacion, auxConvocados, auxPais);
-			retorno = 1;
+			if(selec_getId(unaSeleccion, &auxId)
+			&& selec_getConvocados(unaSeleccion, &auxConvocados)
+			&& selec_getConfederacion(unaSeleccion, auxConfederacion)
+			&& selec_getPais(unaSeleccion, auxPais)){
+
+				printf("|%10d | %25s | %10d | %20s |\n", auxId, auxConfederacion, auxConvocados, auxPais);
+				retorno = 1;
+			}
 		}
 	}
-
 	return retorno;
 }
 
@@ -211,19 +212,21 @@ int validarExistenciaDeSeleccion(LinkedList* pArrayListaSelecciones, int idParam
 
 		for(int i = 0; i < ll_len(pArrayListaSelecciones); i++){
 
-			unaSeleccion = ll_get(pArrayListaSelecciones, i);
+			unaSeleccion = (Seleccion*)ll_get(pArrayListaSelecciones, i);
 
-			if(selec_getId(unaSeleccion, &idDeSeleccion)){
+			if(unaSeleccion != NULL){
 
-				if(idDeSeleccion == idParam){
+				if(selec_getId(unaSeleccion, &idDeSeleccion)){
 
-					retorno = ll_indexOf(pArrayListaSelecciones, unaSeleccion);
-					break; //Retorno el index.
+					if(idDeSeleccion == idParam){
+
+						retorno = ll_indexOf(pArrayListaSelecciones, unaSeleccion);
+						break; //Retorno el index.
+					}
 				}
 			}
 		}
 	}
-
 	return retorno;
 }
 
@@ -236,8 +239,9 @@ int buscarNombreDeConfederacion(LinkedList *pArrayListSeleccion, int idSeleccion
 
 	int retorno = 0;
 	int auxIdSeleccion;
-	char auxConfederation[30];
+	char auxConfederacion[30];
 	Seleccion* auxSeleccion = NULL;
+
 	if (pArrayListSeleccion != NULL && pConfederacion != NULL && idSeleccion > 0){
 
 		for (int i = 0; i < ll_len(pArrayListSeleccion); i++){
@@ -249,9 +253,9 @@ int buscarNombreDeConfederacion(LinkedList *pArrayListSeleccion, int idSeleccion
 				if (selec_getId(auxSeleccion, &auxIdSeleccion)){
 
 					if (auxIdSeleccion == idSeleccion
-					&& selec_getConfederacion(auxSeleccion, auxConfederation)){
+					&& selec_getConfederacion(auxSeleccion, auxConfederacion)){
 
-						strcpy(pConfederacion, auxConfederation);
+						strncpy(pConfederacion, auxConfederacion, 30);
 						retorno = 1;
 					}
 				}
@@ -274,7 +278,7 @@ int buscarNombreDeSeleccion(LinkedList *pArrayListSeleccion, int idSeleccion, ch
 	char auxNombreSeleccion[30];
 	Seleccion* auxSeleccion = NULL;
 
-	if (pArrayListSeleccion != NULL && pSeleccion != NULL && idSeleccion > 0){
+	if (pArrayListSeleccion != NULL && idSeleccion > 0 && pSeleccion != NULL ){
 
 		for (int i = 0; i < ll_len(pArrayListSeleccion); i++){
 
@@ -287,7 +291,7 @@ int buscarNombreDeSeleccion(LinkedList *pArrayListSeleccion, int idSeleccion, ch
 					if (auxIdSeleccion == idSeleccion
 					&& selec_getPais(auxSeleccion, auxNombreSeleccion)){
 
-						strcpy(pSeleccion, auxNombreSeleccion);
+						strncpy(pSeleccion, auxNombreSeleccion, 30);
 						retorno = 1;
 					}
 				}
@@ -303,6 +307,7 @@ int buscarNombreDeSeleccion(LinkedList *pArrayListSeleccion, int idSeleccion, ch
  * \return int, 1 bien, 0 ERROR.
 **/
 int selec_ordenarPorConfederacion(void* elementoA, void* elementoB){
+
 	int retorno = 0;
 	char confederacionA[30];
 	char confederacionB[30];

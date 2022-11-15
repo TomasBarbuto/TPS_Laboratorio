@@ -41,6 +41,8 @@ int idAutoincremental();
 int imprimirJugador(LinkedList* pArrayListaJugadores, int index);
 int validarExistenciaDeJugador(LinkedList* pArrayJugadores, int idParam);
 int imprimirJugadorSeleccion(LinkedList* pArrayListaJugadores, LinkedList* pArrayListaSeleccion, int index);
+int jug_elegirNacionalidad(char SeleccionElegida[]);
+int jug_elegirPosicion(char pPosicionElegida[]);
 
 int jug_ordenarPorNacionalidad(void* elementoA, void* elementoB);
 int jug_ordenarPorNombre(void* elementoA, void* elementoB);

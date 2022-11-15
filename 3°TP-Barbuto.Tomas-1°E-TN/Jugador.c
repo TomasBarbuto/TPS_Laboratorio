@@ -5,6 +5,8 @@
 #include "Controller.h"
 #include "Jugador.h"
 #include "Seleccion.h"
+#include "Validaciones.h"
+#include "Menu.h"
 
 /**
  * \brief Reserva espacio en memoria para el tipo de dato Jugador.
@@ -288,7 +290,6 @@ int jug_getIdSeleccion(Jugador* this, int* idSeleccion){
 		*idSeleccion = this->idSeleccion;
 		retorno = 1;
 	}
-
 	return retorno;
 }
 
@@ -334,20 +335,22 @@ int imprimirJugador(LinkedList* pArrayListaJugadores, int index){
 
 	if(pArrayListaJugadores != NULL && index >= 0 && index < ll_len(pArrayListaJugadores)){
 
-		unJugador = ll_get(pArrayListaJugadores, index);
+		unJugador = (Jugador*)ll_get(pArrayListaJugadores, index);
 
-		if(jug_getId(unJugador, &auxId)
-		&& jug_getNombreCompleto(unJugador, auxNombreCompleto)
-		&& jug_getEdad(unJugador, &auxEdad)
-		&& jug_getPosicion(unJugador, auxPosicion)
-		&& jug_getNacionalidad(unJugador, auxNacionalidad)){
+		if(unJugador != NULL){
 
-			printf("|%10d | %25s | %10d | %20s | %15s |\n", auxId, auxNombreCompleto, auxEdad,
-														auxPosicion,auxNacionalidad);
-			retorno = 1;
+			if(jug_getId(unJugador, &auxId)
+			&& jug_getNombreCompleto(unJugador, auxNombreCompleto)
+			&& jug_getEdad(unJugador, &auxEdad)
+			&& jug_getPosicion(unJugador, auxPosicion)
+			&& jug_getNacionalidad(unJugador, auxNacionalidad)){
+
+				printf("|%10d | %25s | %10d | %20s | %15s |\n", auxId, auxNombreCompleto, auxEdad,
+																auxPosicion,auxNacionalidad);
+				retorno = 1;
+			}
 		}
 	}
-
 	return retorno;
 }
 
@@ -366,19 +369,21 @@ int validarExistenciaDeJugador(LinkedList* pArrayJugadores, int idParam){
 
 		for(int i = 0; i < ll_len(pArrayJugadores); i++){
 
-			unJugador = ll_get(pArrayJugadores, i);
+			unJugador = (Jugador*) ll_get(pArrayJugadores, i);
 
-			if(jug_getId(unJugador, &idDeJugador)){
+			if(unJugador != NULL){
 
-				if(idDeJugador == idParam){
+				if(jug_getId(unJugador, &idDeJugador)){
 
-					retorno = ll_indexOf(pArrayJugadores, unJugador);
-					break; //Retorno el index.
+					if(idDeJugador == idParam){
+
+						retorno = ll_indexOf(pArrayJugadores, unJugador);
+						break; //Retorno el index.
+					}
 				}
 			}
 		}
 	}
-
 	return retorno;
 }
 
@@ -400,33 +405,36 @@ int imprimirJugadorSeleccion(LinkedList* pArrayListaJugadores, LinkedList* pArra
 	int auxIntSeleccion;
 	Jugador* unJugador = NULL;
 
-	if(pArrayListaJugadores != NULL && index >= 0 && index < ll_len(pArrayListaJugadores)){
+	if(pArrayListaJugadores != NULL && index >= 0 && index < ll_len(pArrayListaJugadores)
+	&& pArrayListaSeleccion != NULL){
 
-		unJugador = ll_get(pArrayListaJugadores, index);
+		unJugador = (Jugador*) ll_get(pArrayListaJugadores, index);
 
-		if(jug_getId(unJugador, &auxId)
-		&& jug_getNombreCompleto(unJugador, auxNombreCompleto)
-		&& jug_getEdad(unJugador, &auxEdad)
-		&& jug_getPosicion(unJugador, auxPosicion)
-		&& jug_getNacionalidad(unJugador, auxNacionalidad)
-		&& jug_getIdSeleccion(unJugador, &auxIntSeleccion)){
+		if(unJugador != NULL){
 
-			if(auxIntSeleccion > 0 && buscarNombreDeSeleccion(pArrayListaSeleccion, auxIntSeleccion, pAuxSeleccion)){
+			if(jug_getId(unJugador, &auxId)
+			&& jug_getNombreCompleto(unJugador, auxNombreCompleto)
+			&& jug_getEdad(unJugador, &auxEdad)
+			&& jug_getPosicion(unJugador, auxPosicion)
+			&& jug_getNacionalidad(unJugador, auxNacionalidad)
+			&& jug_getIdSeleccion(unJugador, &auxIntSeleccion)){
 
-				strcpy(auxSeleccion, pAuxSeleccion);
+				if(auxIntSeleccion > 0
+				&& buscarNombreDeSeleccion(pArrayListaSeleccion, auxIntSeleccion, pAuxSeleccion)){
+
+					strncpy(auxSeleccion, pAuxSeleccion, 30);
+
+				}else{
+
+					strncpy(auxSeleccion, "NO CONVOCADO", 30);
+				}
+
+					printf("|%10d | %25s | %10d | %20s | %15s | %20s |\n", auxId, auxNombreCompleto, auxEdad,
+																	auxPosicion, auxNacionalidad, auxSeleccion);
+					retorno = 1;
 			}
-
-			if(auxIntSeleccion == 0){
-
-				strcpy(auxSeleccion, "NO CONVOCADO");
-			}
-				printf("|%10d | %25s | %10d | %20s | %15s | %15s |\n", auxId, auxNombreCompleto, auxEdad,
-															auxPosicion, auxNacionalidad, auxSeleccion);
-				retorno = 1;
-
 		}
 	}
-
 	return retorno;
 }
 
@@ -435,7 +443,7 @@ int imprimirJugadorSeleccion(LinkedList* pArrayListaJugadores, LinkedList* pArra
  * \param puntero a void, puntero a void
  * \return int, 1 bien, 0 ERROR.
 **/
-int jug_ordenarPorNacionalidad(void* elementoA, void* elementoB){
+int jug_ordenarPorNacionalidad(void* jugadorA, void* jugadorB){
 
 	int retorno = 0;
 	char nacionalidadA[30];
@@ -443,18 +451,22 @@ int jug_ordenarPorNacionalidad(void* elementoA, void* elementoB){
 	Jugador* auxJugadorA;
 	Jugador* auxJugadorB;
 
-	auxJugadorA = (Jugador*)elementoA;
-	auxJugadorB = (Jugador*)elementoB;
+	auxJugadorA = (Jugador*)jugadorB;
+	auxJugadorB = (Jugador*)jugadorB;
 
-	if(jug_getNacionalidad(auxJugadorA, nacionalidadA)
+	if(jugadorA != NULL && jugadorB != NULL){
+
+		if(jug_getNacionalidad(auxJugadorA, nacionalidadA)
 		&& jug_getNacionalidad(auxJugadorB, nacionalidadB)){
 
-		if(stricmp(nacionalidadA, nacionalidadB) > 0 ){
-			retorno = 1;
-		}
-		else if(stricmp(nacionalidadA, nacionalidadB) < 0){
+			if(stricmp(nacionalidadA, nacionalidadB) > 0 ){
 
-			retorno = -1;
+				retorno = 1;
+			}
+			else if(stricmp(nacionalidadA, nacionalidadB) < 0){
+
+				retorno = -1;
+			}
 		}
 	}
 	 return retorno;
@@ -465,7 +477,7 @@ int jug_ordenarPorNacionalidad(void* elementoA, void* elementoB){
  * \param puntero a void, puntero a void
  * \return int, 1 bien, 0 ERROR.
 **/
-int jug_ordenarPorNombre(void* elementoA, void* elementoB){
+int jug_ordenarPorNombre(void* jugadorA, void* jugadorB){
 
 	int retorno = 0;
 	char auxNombreA[100];
@@ -473,18 +485,21 @@ int jug_ordenarPorNombre(void* elementoA, void* elementoB){
 	Jugador* auxJugadorA;
 	Jugador* auxJugadorB;
 
-	auxJugadorA = (Jugador*)elementoA;
-	auxJugadorB = (Jugador*)elementoB;
+	auxJugadorA = (Jugador*)jugadorA;
+	auxJugadorB = (Jugador*)jugadorB;
 
-	if(jug_getNombreCompleto(auxJugadorA, auxNombreA)
-	&& jug_getNombreCompleto(auxJugadorB, auxNombreB)){
+	if(jugadorA != NULL && jugadorB != NULL){
 
-		if(stricmp(auxNombreA, auxNombreB) > 0 ){
-			retorno = 1;
-		}
-		else if(stricmp(auxNombreA, auxNombreB) < 0){
+		if(jug_getNombreCompleto(auxJugadorA, auxNombreA)
+		&& jug_getNombreCompleto(auxJugadorB, auxNombreB)){
 
-			retorno = -1;
+			if(stricmp(auxNombreA, auxNombreB) > 0 ){
+				retorno = 1;
+			}
+			else if(stricmp(auxNombreA, auxNombreB) < 0){
+
+				retorno = -1;
+			}
 		}
 	}
 	return retorno;
@@ -495,7 +510,7 @@ int jug_ordenarPorNombre(void* elementoA, void* elementoB){
  * \param puntero a void, puntero a void
  * \return int, 1 bien, 0 ERROR.
 **/
-int jug_ordenarPorEdad(void* elementoA, void* elementoB){
+int jug_ordenarPorEdad(void* jugadorA, void* jugadorB){
 
 	int retorno = 0;
 	int edadA;
@@ -503,22 +518,257 @@ int jug_ordenarPorEdad(void* elementoA, void* elementoB){
 	Jugador* auxJugadorA;
 	Jugador* auxJugadorB;
 
-	auxJugadorA = (Jugador*)elementoA;
-	auxJugadorB = (Jugador*)elementoB;
+	auxJugadorA = (Jugador*)jugadorA;
+	auxJugadorB = (Jugador*)jugadorB;
 
-	if(jug_getEdad(auxJugadorA, &edadA)
-	&& jug_getEdad(auxJugadorB, &edadB)){
+	if(jugadorA != NULL && jugadorB != NULL){
 
-		if(edadA > edadB){
+		if(jug_getEdad(auxJugadorA, &edadA)
+		&& jug_getEdad(auxJugadorB, &edadB)){
 
-			retorno = 1;
-		}
-		else if(edadA < edadB){
+			if(edadA > edadB){
 
-			retorno = -1;
+				retorno = 1;
+			}
+			else if(edadA < edadB){
+
+				retorno = -1;
+			}
 		}
 	}
 	 return retorno;
 }
 
+/**
+ * \brief despliega opciones y se debera elegir la opcion que se desee ingresando un entero
+ * \param puntero a char.
+ * \return int, 1 bien, 0 ERROR.
+**/
+int jug_elegirNacionalidad(char pSeleccionElegida[]){
+
+	int retorno = 0;
+	int opcion;
+
+	if(pSeleccionElegida != NULL){
+
+		elegirNacionalidad();
+
+		if(getNumber(&opcion, "Opcion: ", "\nERROR opcion no validar\nReingrese\n", 1, 32)){
+
+			switch(opcion){
+
+			case 1:
+				strncpy(pSeleccionElegida,"Aleman",  30);
+				break;
+
+			case 2:
+				strncpy(pSeleccionElegida, "Arabe",  30);
+				break;
+
+			case 3:
+				strncpy(pSeleccionElegida, "Argentino", 30);
+				break;
+
+			case 4:
+				strncpy(pSeleccionElegida, "Australiano", 30);
+				break;
+
+			case 5:
+				strncpy(pSeleccionElegida, "Belga", 30);
+				break;
+
+			case 6:
+				strncpy(pSeleccionElegida, "Brasilero", 30);
+				break;
+
+			case 7:
+				strncpy(pSeleccionElegida, "Camerunes", 30);
+				break;
+
+			case 8:
+				strncpy(pSeleccionElegida, "Canadiense", 30);
+				break;
+
+			case 9:
+				strncpy(pSeleccionElegida, "Coreano", 30);
+				break;
+
+			case 10:
+				strncpy(pSeleccionElegida, "Costa Riqueño", 30);
+				break;
+
+			case 11:
+				strncpy(pSeleccionElegida, "Croata", 30);
+				break;
+
+			case 12:
+				strncpy(pSeleccionElegida, "Danes", 30);
+				break;
+
+			case 13:
+				strncpy(pSeleccionElegida, "Ecuatoriano", 30);
+				break;
+
+			case 14:
+				strncpy(pSeleccionElegida, "Espanol", 30);
+				break;
+
+			case 15:
+				strncpy(pSeleccionElegida, "Estado Unidense", 30);
+				break;
+
+			case 16:
+				strncpy(pSeleccionElegida, "Frances", 30);
+				break;
+
+			case 17:
+				strncpy(pSeleccionElegida, "Gales", 30);
+				break;
+
+			case 18:
+				strncpy(pSeleccionElegida, "Ghanes", 30);
+				break;
+
+			case 19:
+				strncpy(pSeleccionElegida, "Holandes", 30);
+				break;
+
+			case 20:
+				strncpy(pSeleccionElegida, "Ingles", 30);
+				break;
+
+			case 21:
+				strncpy(pSeleccionElegida, "Irani", 30);
+				break;
+
+			case 22:
+				strncpy(pSeleccionElegida, "Japones", 30);
+				break;
+
+			case 23:
+				strncpy(pSeleccionElegida, "Marroqui", 30);
+				break;
+
+			case 24:
+				strncpy(pSeleccionElegida, "Mexicano", 30);
+				break;
+
+			case 25:
+				strncpy(pSeleccionElegida, "Polaco", 30);
+				break;
+
+			case 26:
+				strncpy(pSeleccionElegida, "Portugues", 30);
+				break;
+
+			case 27:
+				strncpy(pSeleccionElegida, "Qatari", 30);
+				break;
+
+			case 28:
+				strncpy(pSeleccionElegida, "Senegales", 30);
+				break;
+
+			case 29:
+				strncpy(pSeleccionElegida, "Serbio", 30);
+				break;
+
+			case 30:
+				strncpy(pSeleccionElegida, "Suizo", 30);
+				break;
+
+			case 31:
+				strncpy(pSeleccionElegida, "Tunecino", 30);
+				break;
+
+			case 32:
+				strncpy(pSeleccionElegida, "Uruguayo", 30);
+				break;
+			}
+			retorno = 1;
+		}
+		printf("Usted selecciono %s\n", pSeleccionElegida);
+		system("pause");
+	}
+	return retorno;
+}
+
+
+
+/**
+ * \brief despliega opciones y se debera elegir la opcion que se desee ingresando un entero
+ * \param puntero a char.
+ * \return int, 1 bien, 0 ERROR.
+**/
+int jug_elegirPosicion(char pPosicionElegida[]){
+
+	int retorno = 0;
+	int opcion;
+
+	if(pPosicionElegida != NULL){
+
+		elegirPosicion();
+		if(getNumber(&opcion, "Opcion: ", "\nERROR opcion no validar\nReingrese\n", 1, 32)){
+
+			switch(opcion){
+
+			case 1:
+				strncpy(pPosicionElegida, "Portero",  30);
+				break;
+
+			case 2:
+				strncpy(pPosicionElegida, "Defensa central",  30);
+				break;
+
+			case 3:
+				strncpy(pPosicionElegida, "Lateral izquierdo", 30);
+				break;
+
+			case 4:
+				strncpy(pPosicionElegida, "Lateral derecho", 30);
+				break;
+
+			case 5:
+				strncpy(pPosicionElegida, "Pivote", 30);
+				break;
+
+			case 6:
+				strncpy(pPosicionElegida, "Mediocentro", 30);
+				break;
+
+			case 7:
+				strncpy(pPosicionElegida, "Mediocentro ofensivo", 30);
+				break;
+
+			case 8:
+				strncpy(pPosicionElegida, "Mediapunta", 30);
+				break;
+
+			case 9:
+				strncpy(pPosicionElegida, "Extremo derecho", 30);
+				break;
+
+			case 10:
+				strncpy(pPosicionElegida, "Extremo izquierdo", 30);
+				break;
+
+			case 11:
+				strncpy(pPosicionElegida, "Interior izquierdo", 30);
+				break;
+
+			case 12:
+				strncpy(pPosicionElegida, "Interior derecho", 30);
+				break;
+
+			case 13:
+				strncpy(pPosicionElegida, "Delantero centro", 30);
+				break;
+			}
+			retorno = 1;
+		}
+		printf("Usted selecciono %s\n", pPosicionElegida);
+		system("pause");
+	}
+	return retorno;
+}
 

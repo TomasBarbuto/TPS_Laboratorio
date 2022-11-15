@@ -23,3 +23,4 @@ int controller_guardarJugadorPorConfederacionBinario(char *path, LinkedList* pAr
 											  LinkedList* pArrayListSeleccion, char Confederacion[]);
 int controller_cargarJugadoresPorConfederacionBinario(char *path, LinkedList* pArrayListJugador,
 										      LinkedList* pArrayListSeleccion, char Confederacion[]);
+int controller_listarJugadoresNoConvocados(LinkedList* pArrayListJugador);

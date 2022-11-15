@@ -44,7 +44,7 @@ int main(){
     			break;
 
     		case 2:
-    			if(flagCargarArchivos == 1 && ll_isEmpty(listaJugadores) == 0){
+    			if(ll_isEmpty(listaJugadores) == 0){
 					if(controller_agregarJugador(listaJugadores)){
 
 						printf("Se agrego un jugador correctamente\n");
@@ -57,7 +57,7 @@ int main(){
     			break;
 
     		case 3:
-    			if(flagCargarArchivos == 1 && ll_isEmpty(listaJugadores) == 0){
+    			if(ll_isEmpty(listaJugadores) == 0){
 					if(controller_editarJugador(listaJugadores)){
 
 						printf("Se modifico un jugador correctamente\n");
@@ -74,7 +74,8 @@ int main(){
     			break;
 
     		case 4:
-    			if(flagCargarArchivos == 1 && ll_isEmpty(listaJugadores) == 0){
+    			if(ll_isEmpty(listaJugadores) == 0){
+
 					if(controller_removerJugador(listaJugadores,listaSelecciones)){
 
 						printf("Se elimino un jugador\n");
@@ -90,7 +91,7 @@ int main(){
     			break;
 
     		case 5:
-    			if(flagCargarArchivos == 1 && ll_isEmpty(listaJugadores) == 0){
+    			if(ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0){
 
     				if(!menuListar(listaJugadores, listaSelecciones)){
 
@@ -104,7 +105,7 @@ int main(){
     			break;
 
     		case 6:
-    			if(flagCargarArchivos == 1 && ll_isEmpty(listaJugadores) == 0){
+    			if(ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0){
 
     				if(!menuConvocarJugadores(listaJugadores, listaSelecciones)){
 
@@ -118,10 +119,11 @@ int main(){
     			break;
 
     		case 7:
-    			if(flagCargarArchivos == 1 && ll_isEmpty(listaJugadores) == 0){
+    			if(ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0){
 
-    				if(menuOrdenarListar(listaJugadores, listaSelecciones)){
+    				if(!menuOrdenarListar(listaJugadores, listaSelecciones)){
 
+    					printf("ERROR al mostrar el menu\n");
     				}
     			}else{
 
@@ -131,9 +133,10 @@ int main(){
     			break;
 
     		case 8:
-    			if(flagCargarArchivos == 1 && ll_isEmpty(listaJugadores) == 0){
+    			if(ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0){
 
 					if(!menuGuardarBinario(listaJugadores, listaSelecciones, &flagArchivosBinarios)){
+
 						printf("ERROR al mostrar el menu\n");
 					}
 
@@ -145,10 +148,11 @@ int main(){
     			break;
 
     		case 9:
-    			if(flagArchivosBinarios == 1 && flagCargarArchivos == 1 && ll_isEmpty(listaJugadores) == 0){
+    			if(ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0 && flagArchivosBinarios == 1){
 
-    				if(menuCargarBinario(listaJugadores, listaSelecciones)){
+    				if(!menuCargarBinario(listaJugadores, listaSelecciones)){
 
+    					printf("ERROR al mostrar el menu\n");
     				}
     			}else{
 
@@ -158,7 +162,7 @@ int main(){
     			break;
 
     		case 10:
-    			if(flagCargarArchivos == 1 && ll_isEmpty(listaJugadores) == 0){
+    			if(flagCargarArchivos == 1 && ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0){
 
 					if(controller_guardarSeleccionesModoTexto("selecciones.csv", listaSelecciones)
 					&& controller_guardarJugadoresModoTexto("jugadores.csv", listaJugadores)){

@@ -16,6 +16,8 @@ void menuArchivoBinario();
 void menuOrdenar();
 void menuOrdenarJugadores();
 void menuOrdenarSelecciones();
+void elegirNacionalidad();
+void elegirPosicion();
 int menuOrdenarListar(LinkedList* listaJugadores, LinkedList* listaSelecciones);
 int menuListar(LinkedList* listaJugadores, LinkedList* listaSelecciones);
 int menuConvocarJugadores(LinkedList* listaJugadores, LinkedList* listaSelecciones);

@@ -99,18 +99,29 @@ int getString(char pResultado[], char *mensaje, char *mensajeError, int EspacioC
 			fflush(stdin);
 			fgets(buffer, sizeof(buffer)-1, stdin);
 
-			if(strlen(buffer) <= sizeof(buffer)-1) {
+			if(strlen(buffer) <= sizeof(buffer)-1 && buffer[0] != ' ' && buffer[0] != '\n'){
 
 				for(int i = 0; i < sizeof(buffer); i++){
 
-					if(buffer[i] == '\n'){
+					if(buffer[i] >= '0' && buffer[i] <= '9'){
 
-						buffer[i] = '\0';
+						printf("%s", mensajeError);
+						break;
+					}else{
+
+						if((buffer[i] < 'A' || buffer[i] > 'Z') && (buffer[i] < 'a' && buffer[i] > 'z')){
+
+
+						}
+						if(buffer[i] == '\n'){
+
+							buffer[i] = '\0';
+							retorno = 1;
+							break;
+						}
 					}
 				}
 				strcpy(pResultado,buffer);
-				retorno = 1;
-				break;
 
 			} else {
 
