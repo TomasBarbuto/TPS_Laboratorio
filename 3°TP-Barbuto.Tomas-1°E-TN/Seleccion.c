@@ -19,10 +19,12 @@ Seleccion* selec_new(){
 
 	if (nuevaSeleccion != NULL){
 
-		nuevaSeleccion->id = 0;
-		strncpy(nuevaSeleccion->pais, " ", 30);
-		strncpy(nuevaSeleccion->confederacion, " ", 30);
-		selec_setConvocados(nuevaSeleccion, 0);
+		if(selec_setConvocados(nuevaSeleccion, 0)){
+
+			nuevaSeleccion->id = 0;
+			strncpy(nuevaSeleccion->pais, " ", 30);
+			strncpy(nuevaSeleccion->confederacion, " ", 30);
+		}
 
 	}
 
@@ -39,22 +41,24 @@ Seleccion* selec_newParametros(char* idStr, char* paisStr, char* confederacionSt
 
 	Seleccion* nuevaSeleccion = selec_new();
 
-	if(nuevaSeleccion != NULL){
+	if(idStr != NULL && paisStr != NULL && confederacionStr != NULL && convocadosStr != NULL){
 
-		if (!(selec_setConvocados(nuevaSeleccion, atoi(convocadosStr)))){
+		if(nuevaSeleccion != NULL){
 
-			selec_delete(nuevaSeleccion);
-			nuevaSeleccion = NULL;	//INDICA FUNCION NO ANDUVO BIEN.
+			if (!(selec_setConvocados(nuevaSeleccion, atoi(convocadosStr)))){
 
-		}else{
+				selec_delete(nuevaSeleccion);
+				nuevaSeleccion = NULL;	//INDICA FUNCION NO ANDUVO BIEN.
 
-			nuevaSeleccion->id = atoi(idStr);
-			strncpy(nuevaSeleccion->pais, paisStr, 30);
-			strncpy(nuevaSeleccion->confederacion, confederacionStr, 30);
+			}else{
 
+				nuevaSeleccion->id = atoi(idStr);
+				strncpy(nuevaSeleccion->pais, paisStr, 30);
+				strncpy(nuevaSeleccion->confederacion, confederacionStr, 30);
+
+			}
 		}
 	}
-
 	return nuevaSeleccion;
 }
 
