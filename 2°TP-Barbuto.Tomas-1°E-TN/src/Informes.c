@@ -398,7 +398,7 @@ int jugadoresPorConfederacion(eJugador arrayJugadores[], eConfederacion arrayCon
 								int longitudConfederacion, int longitudJugadores){
 
 	int retorno = 0;
-	int contador = 0;
+	int contadorJugadoresPorConfederacion = 0;
 	int flagPrint = 0;
 	char confederacion[50];
 
@@ -408,15 +408,15 @@ int jugadoresPorConfederacion(eJugador arrayJugadores[], eConfederacion arrayCon
 
 		for(int i = 0; i < longitudConfederacion; i++){
 
-			contador = 0;
+			contadorJugadoresPorConfederacion = 0;
 			flagPrint = 0;
 
 			for(int j = 0; j < longitudJugadores; j++){
 
 				if(arrayJugadores[j].isEmpty == 1 && arrayConfederaciones[i].id == arrayJugadores[j].idConfederacion){
-					contador++;
+					contadorJugadoresPorConfederacion++;
 
-					if(contador > 0 && flagPrint == 0){
+					if(contadorJugadoresPorConfederacion > 0 && flagPrint == 0){
 						strncpy(confederacion, arrayConfederaciones[i].nombre, 50);
 						printf("\n%s\n", confederacion);
 						printf("| %5s | %25s | %15s | %5s | %10s | %12s | %15s |\n", "ID", "NOMBRE JUGADOR", "POSICION",
