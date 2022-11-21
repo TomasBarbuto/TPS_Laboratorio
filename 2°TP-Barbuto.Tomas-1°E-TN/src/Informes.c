@@ -321,7 +321,7 @@ int regionMasJugadores(eJugador arrayJugadores[], eConfederacion arrayConfederac
 	int retorno = 0;
 	int maximoDeJugadoresEnRegion = 0;
 	int contadorJugadores;
-	int auxId;
+	int idConfederacionConMasJugadores;
 	char regionConMasJugadores[50];
 
 	if(arrayJugadores != NULL && arrayConfederaciones != NULL && longitudConfederacion > 0 && longitudJugadores > 0){
@@ -343,7 +343,7 @@ int regionMasJugadores(eJugador arrayJugadores[], eConfederacion arrayConfederac
 			if(maximoDeJugadoresEnRegion < contadorJugadores){
 
 				maximoDeJugadoresEnRegion = contadorJugadores;
-				auxId = arrayConfederaciones[i].id;
+				idConfederacionConMasJugadores = arrayConfederaciones[i].id;
 				strncpy(regionConMasJugadores, arrayConfederaciones[i].region, 50);
 
 			}
@@ -352,7 +352,7 @@ int regionMasJugadores(eJugador arrayJugadores[], eConfederacion arrayConfederac
 		printf("\nRegion: %s\n", regionConMasJugadores);
 
 		if(!listarJugadoresPorRegion(arrayJugadores, longitudJugadores, arrayConfederaciones, longitudConfederacion,
-				auxId)){
+				idConfederacionConMasJugadores)){
 
 			retorno = 0;
 		}
@@ -417,6 +417,7 @@ int jugadoresPorConfederacion(eJugador arrayJugadores[], eConfederacion arrayCon
 					contadorJugadoresPorConfederacion++;
 
 					if(contadorJugadoresPorConfederacion > 0 && flagPrint == 0){
+
 						strncpy(confederacion, arrayConfederaciones[i].nombre, 50);
 						printf("\n%s\n", confederacion);
 						printf("| %5s | %25s | %15s | %5s | %10s | %12s | %15s |\n", "ID", "NOMBRE JUGADOR", "POSICION",
