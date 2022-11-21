@@ -12,16 +12,16 @@ int menuInformes(eJugador arrayJugadores[], eConfederacion arrayConfederaciones[
 				int longitudConfederaciones);
 int ordenarPorConfederacionyNombreJugador(eConfederacion arrayConfederaciones[], eJugador arrayJugadores[],
 										  int longitudConfederaciones, int longitudJugadores);
-int listadoJugadoresConSuConfederacion(eJugador unJugador, eConfederacion arrayConfederacion[],
-							  	  	   int longitudConfederaciones);
-int imprimirListadoDeJugadoresConSuConfederacion(eJugador arrayJugadores[], int longitudJugadores,
-												eConfederacion arrayConfederaciones[], int longitudConfederaciones);
 int totalYPromediosDeSalarios(eJugador arrayJugadores[], int longitudJugadores);
 int confederacionConMayorAniosDeContratos(eJugador arrayJugadores[],eConfederacion arrayConfederaciones[],
 										 int longitudConfederaciones, int longitudJugadores);
 int porcentajeDeJugadoresPorConfederacion(eJugador arrayJugadores[],eConfederacion arrayConfederaciones[],
 										  int longitudJugadores);
 int regionMasJugadores(eJugador arrayJugadores[],eConfederacion arrayConfederaciones[], int longitudConfederacion,
-					   int longitudJugadores);
-
+												int longitudJugadores);
+int totalDeSalarios(eJugador arrayJugadores[], int longitudJugadores, float* totalSalarios, int* cantidadJugadores);
+int cantidadDeJugadoresConSalarioMayorAlPromedio(eJugador arrayJugadores[], int longitudJugadores,
+												int* contadorJugadores, float* sueldoPromedio);
+int jugadoresPorConfederacion(eJugador arrayJugadores[], eConfederacion arrayConfederaciones[],
+											int longitudConfederacion, int longitudJugadores);
 #endif /* INFORMES_H_ */

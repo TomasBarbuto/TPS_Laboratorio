@@ -21,7 +21,6 @@ typedef struct{
 
 }eJugador;
 
-
 int inicializarJugadores(eJugador Jugadores[], int longitud);
 int idJugador();
 int buscarVacioJugadores(eJugador Jugadores[], int longitud);
@@ -35,5 +34,7 @@ int darBajaJugador(eJugador arrayJugadores[], int longitudJugadores, eConfederac
 					int longitudConfederaciones);
 int modificarJugador(eJugador arrayJugadores[], eConfederacion arrayConfederaciones[], int longitudJugadores,
 					 int longitudConfederaciones);
-
+int seleccionarPosicion(char pPosicionElegida[]);
+int listarJugadoresPorRegion(eJugador arrayJugadores[], int longitudJugadores, eConfederacion arrayConfederaciones[],
+					int longitudConfederacion, int idConfederacion);
 #endif /* JUGADORES_H_ */

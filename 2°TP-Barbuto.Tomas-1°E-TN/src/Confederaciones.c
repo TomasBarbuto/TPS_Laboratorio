@@ -5,6 +5,7 @@
 #include "Jugadores.h"
 #include "Validaciones.h"
 #include "Menu.h"
+
 /**
 *\brief: Iniciar el campo isEmpty = 0, del array de tipo eConfederacion.
 *\param: variable de tipo eConfederacion.
@@ -68,14 +69,11 @@ int listarConfederaciones(eConfederacion arrayConfederaciones[], int longitud){
 
 	if (arrayConfederaciones != NULL && longitud > 0) {
 
-		printf("\n+----------------------------------------------------------------------------------+\n");
-		printf("|%*s|%*s|%*s|%*s|\n", 4, "ID", 20, "NOMBRE", 20, "REGION", 5, "AÑOS DE CONTRATO");
-		printf("+----------------------------------------------------------------------------------+\n");
-
+		printf("\n| %5s | %25s | %17s | %15s |\n", "ID", "NOMBRE CONFEDERACION", "REGION", "AÑOS DE CONTRATO");
 		for (int i = 0; i < longitud; i++) {
 
-			printf("|%*d|%*s|%*s|%*d|\n", 4,arrayConfederaciones[i].id,20,arrayConfederaciones[i].nombre, 20,
-					arrayConfederaciones[i].region, 5, arrayConfederaciones[i].anioCreacion);
+			printf("| %5d | %25s | %17s | %16d |\n", arrayConfederaciones[i].id,arrayConfederaciones[i].nombre,
+					arrayConfederaciones[i].region,arrayConfederaciones[i].anioCreacion);
 
 		}
 		retorno = 1;
@@ -226,16 +224,17 @@ int darAltaConfederacion(eConfederacion arrayConfederaciones[], int longitudConf
 
 			if(indice != -1){
 
-				auxConfederacion.id = idConfederacion();
 
-				if(getString(auxConfederacion.nombre, "\nIngrese Nombre: ",
-						"\nSupero los caracteres aceptados\n", 50) &&
-				   getString(auxConfederacion.region, "\nIngrese region: ",
-						"\nSupero los caracteres aceptados\n", 50) &&
-				   getNumber(&auxConfederacion.anioCreacion, "\nIngrese anio de creacion: ", "\nAnio No valido\n",
-						1916, 2022)){
+
+				if(utn_getNombre(auxConfederacion.nombre, 50, "\nIngrese Nombre: ",
+				   "\nSupero los caracteres aceptados\n", 5) &&
+				   utn_getNombre(auxConfederacion.region, 50, "\nIngrese region: ",
+				   "\nSupero los caracteres aceptados\n", 5) &&
+				   utn_getNumero(&auxConfederacion.anioCreacion, "\nIngrese anio de creacion: ", "\nAnio No valido\n",
+				   1916, 2022, 5)){
 
 					auxConfederacion.isEmpty = 1;
+					auxConfederacion.id = idConfederacion();
 
 				}else{
 
@@ -246,10 +245,13 @@ int darAltaConfederacion(eConfederacion arrayConfederaciones[], int longitudConf
 
 			mostrarDatoConfederacion(auxConfederacion);
 
-			if(getNumber(&confirmar, "\nIngrese 1 si los datos ingresados son correctos o 0 si desea volver a cargar\n"
-					"Opcion: ", "\nNo ingreso algo valido\n", 0, 1)){
+			if(utn_getNumero(&confirmar, "\nIngrese 1 si los datos ingresados son correctos o 0 si desea volver a cargar\n"
+				"Opcion: ", "\nNo ingreso algo valido\n", 0, 1, 5)){
 
 				printf("Usted Confirmo los Datos Ingresados...\n");
+			}else{
+
+				auxConfederacion.id = idConfederacion()-2;
 			}
 
 		}while(confirmar != 1);
@@ -303,7 +305,8 @@ int darBajaConfederacion(eConfederacion arrayConfederaciones[], int longitudConf
 		listarConfederaciones(arrayConfederaciones, longitudConfederaciones);
 
 		do{
-			if(!getNumber(&id, "Que id quiere dar de baja?\nNumero: ", "Numero no valido\nReingrese El ID", 1, 3000)){
+			if(!utn_getNumero(&id, "Que id quiere dar de baja?\nNumero: ",
+					"Numero no valido\nReingrese El ID", 1, 3000, 5)){
 
 				printf("Ocurrio un error, llame al departamento de sistemas\n");
 				break;
@@ -319,8 +322,8 @@ int darBajaConfederacion(eConfederacion arrayConfederaciones[], int longitudConf
 
 				mostrarDatoConfederacion(arrayConfederaciones[indice]);
 
-				if(!getNumber(&confirmar, "\nConfirme si desea dar de baja\n"
-						"0-ELEGIR OTRO ID\n1- CONFIRMAR\nOPCION:", "\nNo es una opcion valida\n", 0,1)){
+				if(!utn_getNumero(&confirmar, "\nConfirme si desea dar de baja\n"
+					"0-ELEGIR OTRO ID\n1- CONFIRMAR\nOPCION:", "\nNo es una opcion valida\n", 0,1,5)){
 
 					printf("Ocurrio un error, llame al departamento de sistemas\n");
 					break;
@@ -346,11 +349,15 @@ int modificarConfederacion(eConfederacion arrayConfederaciones[], int longitudCo
 	int retorno = 0;
 	int id;
 	int indice;
+	int opcion;
 
 	if (arrayConfederaciones != NULL && longitudConfederaciones > 0) {
 
+		retorno = 1;
+
 		if(listarConfederaciones(arrayConfederaciones, longitudConfederaciones) &&
-		   getNumber(&id, "Que id quiere dar de baja?\nNumero: ", "Numero no valido\nReingrese El ID", 1, 3000)){
+		utn_getNumero(&id, "Que id quiere dar de baja?\nNumero: ", "Numero no valido\nReingrese El ID",
+				1, 3000, 5)){
 
 			indice = validarExistenciaDeConfederacion(arrayConfederaciones, longitudConfederaciones, id);
 
@@ -361,16 +368,56 @@ int modificarConfederacion(eConfederacion arrayConfederaciones[], int longitudCo
 			printf("No se encontro el ID seleccionado\n");
 			system("pause");
 
-		} else {
+		}else{
 
-			if(menuModificarConfederacion(arrayConfederaciones, indice)){
+			do{
+				mostrarMenuModificarConfederacion();
+				if(utn_getNumero(&opcion, "\nOpcion: ", "Opcion no valida", 1, 4, 5)){
 
-			}
+					switch (opcion) {
 
+					case 1:
+						if(!utn_getNombre(arrayConfederaciones[indice].nombre, 50, "\nIngrese nuevo nombre(max 50): ",
+								"Usted ingreso mas de 50 caracteres. REINTENTE\n", 5)){
+
+							retorno = 0;
+							break;
+						}
+						break;
+
+					case 2:
+						if(!utn_getNombre(arrayConfederaciones[indice].region, 50, "\nIngrese la nueva region (max 50): ",
+									"\nSupero los caracteres aceptados\n", 5)){
+
+							retorno = 0;
+							break;
+						}
+						break;
+
+					case 3:
+						if(!utn_getNumero(&arrayConfederaciones[indice].anioCreacion, "\nIngrese nuevo anio de creacion: ",
+								"\nAño No valido\n", 1916, 2022, 5)){
+
+							retorno = 0;
+							break;
+						}
+						break;
+
+					case 4:
+						break;
+					}
+					system("pause");
+
+
+				}else{
+
+					printf("Ocurrio un error, Sera redirigido\n");
+					break;
+
+				}
+			}while(opcion != 4);
 		}
-		retorno = 1;
 	}
-
 	return retorno;
 }
 

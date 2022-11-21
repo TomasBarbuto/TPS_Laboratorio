@@ -80,9 +80,9 @@ int mostrarDatoJugador(eJugador arrayJugadores, eConfederacion arrayConfederacio
 			printf("Ocurrio un ERROR\n");
 		}
 
-		printf("|%*d|%*s|%*s|%*d|%*.2f|%*s|%*d|\n", 4,arrayJugadores.id,10,
-				arrayJugadores.nombre, 10, arrayJugadores.posicion, 10, arrayJugadores.numeroCamiseta, 10,
-				arrayJugadores.salario, 10, nombreConfederacion,20, arrayJugadores.aniosContrato);
+		printf("| %5d | %25s | %15s | %10d | %11.2f| %13s | %16d |\n",arrayJugadores.id,
+				arrayJugadores.nombre,arrayJugadores.posicion,arrayJugadores.numeroCamiseta,
+				arrayJugadores.salario, nombreConfederacion,arrayJugadores.aniosContrato);
 
 		retorno = 1;
 
@@ -100,60 +100,45 @@ int darAltaJugador(eJugador arrayJugadores[], eConfederacion arrayConfederacione
 
 	int retorno = 0;
 	int indice;
-	int confirmar;
 	eJugador auxJugador;
 
 	if (arrayJugadores != NULL && arrayConfederaciones != NULL && longitudJugadores > 0  && longitudConfederaciones > 0) {
 
-		do{
+		indice = buscarVacioJugadores(arrayJugadores, longitudJugadores);
 
-			indice = buscarVacioJugadores(arrayJugadores, longitudJugadores);
+		if(indice != -1){
 
-			if(indice != -1){
+			if(utn_getNombre(auxJugador.nombre, 50, "\nIngrese Nombre: ",
+					"\nSupero los caracteres aceptados\n", 5) &&
+				seleccionarPosicion(auxJugador.posicion) &&
+				utn_getNumeroShort(&auxJugador.numeroCamiseta, "\nIngrese Numero de camiseta entre 1-30: ",
+					   "\nNo es posible ese numero\n", 1, 30, 5) &&
+			   listarConfederaciones(arrayConfederaciones, longitudConfederaciones) &&
+			   utn_getNumero(&auxJugador.idConfederacion, "\nSeleccione confederacion por ID: ",
+					   "\nID No valido\n", 100, 105, 5) &&
+			   utn_getNumeroFlotante(&auxJugador.salario, "\nIngrese Salario:($1000 - $1000000) $",
+					   "No es posible que un jugador posea ese salario\n", 1000, 1000000, 5)&&
+				utn_getNumeroShort(&auxJugador.aniosContrato, "\nIngrese los anios de contrato: ",
+					  "\nNo es posible tener tantos años de contrato\n",
+					1, 5, 5)){
 
+				auxJugador.isEmpty = 1;
 				auxJugador.id = idJugador();
 
-				if(getString(auxJugador.nombre, "\nIngrese Nombre: ",
-						"\nSupero los caracteres aceptados\n", 50) &&
-				   getString(auxJugador.posicion, "\nIngrese Posicion: ",
-						"\nSupero los caracteres aceptados\n", 50) &&
-				   getShort(&auxJugador.numeroCamiseta, "\nIngrese Numero de camiseta entre 1-30: ",
-						   "\nNo es posible ese numero\n", 1, 30) &&
-				   listarConfederaciones(arrayConfederaciones, longitudConfederaciones) &&
-				   getNumber(&auxJugador.idConfederacion, "\nSeleccione confederacion por ID: ",
-						   "\nID No valido\n", 100, 105) &&
-				   getFloatSinLimite(&auxJugador.salario, "\nIngrese Salario: $",
-						   "\nA ocurrido un error Inesperado\n") &&
-				   getShort(&auxJugador.aniosContrato, "\nIngrese los anios de contrato: ",
-						  "\nNo es posible tener tantos años de contrato\n",
-						1, 5)){
+				printf("| %5s | %25s | %15s | %5s | %10s | %12s | %15s |\n", "ID", "NOMBRE JUGADOR", "POSICION",
+												"N°CAMISETA", "SUELDO", "CONFEDERACION", "AÑOS DE CONTRATO");
+				if(mostrarDatoJugador(auxJugador, arrayConfederaciones, longitudConfederaciones)){
 
-					auxJugador.isEmpty = 1;
-
-				}else{
-
-					printf("Ocurrio un error, llame al departamento de sistemas\n");
-					break;
+					arrayJugadores[indice] = auxJugador;
+					retorno = 1;
 				}
 
+			}else{
+
+				retorno = 0;
 			}
-			printf("\n+----------------------------------------------------------------------------------+\n");
-			printf("| %2s |%8s | %5s | %1s | %2s | %4s | %1s |\n","ID","NOMBRE","POSICION","N°CAMISETA","SUELDO","CONFEDERACION","AÑOS DE CONTRATO");
-			printf("+----------------------------------------------------------------------------------+\n");
-			mostrarDatoJugador(auxJugador,arrayConfederaciones,longitudConfederaciones);
-
-			if(getNumber(&confirmar, "\nIngrese 1 si los datos ingresados son correctos o 0 si desea volver a cargar\n"
-					"Opcion: ", "\nNo ingreso algo valido\n", 0, 1)){
-
-				printf("Usted Confirmo los Datos Ingresados...\n");
-			}
-
-		}while(confirmar != 1);
-
-		arrayJugadores[indice] = auxJugador;
-		retorno = 1;
+		}
 	}
-
 	return retorno;
 }
 
@@ -177,7 +162,6 @@ int validarExistenciaDeJugador(eJugador arrayJugadores[], int longitud, int id) 
 			}
 		}
 	}
-
 	return retorno;
 }
 
@@ -192,9 +176,9 @@ int listarJugadores(eJugador arrayJugadores[], int longitudJugadores, eConfedera
 
 	if (arrayJugadores != NULL && longitudJugadores > 0) {
 
-		printf("\n+----------------------------------------------------------------------------------+\n");
-		printf("|%2s|%8s | %5s | %1s | %2s | %4s | %1s |\n","ID","NOMBRE","POSICION","N°CAMISETA","SUELDO","CONFEDERACION","AÑOS DE CONTRATO");
-		printf("+----------------------------------------------------------------------------------+\n");
+		printf("| %5s | %25s | %15s | %5s | %10s | %12s | %15s |\n", "ID", "NOMBRE JUGADOR", "POSICION",
+											"N°CAMISETA", "SUELDO", "CONFEDERACION", "AÑOS DE CONTRATO");
+
 		for (int i = 0; i < longitudJugadores; i++) {
 
 			if (arrayJugadores[i].isEmpty == 1) {
@@ -216,46 +200,45 @@ int listarJugadores(eJugador arrayJugadores[], int longitudJugadores, eConfedera
 int darBajaJugador(eJugador arrayJugadores[], int longitudJugadores, eConfederacion arrayConfederaciones[],
 					int longitudConfederaciones) {
 
-	int retorno = -1;
+	int retorno;
 	int id;
 	int indice;
-	int confirmar;
 
 	if (arrayJugadores != NULL && longitudJugadores > 0) {
 
-		listarJugadores(arrayJugadores, longitudJugadores, arrayConfederaciones ,longitudConfederaciones);
+		retorno = 1;
 
-		do{
-			if(!getNumber(&id, "Que id quiere dar de baja?\nNumero: ", "Numero no valido\nReingrese El ID", 1, 3000)){
+		if(!listarJugadores(arrayJugadores, longitudJugadores, arrayConfederaciones ,longitudConfederaciones)){
 
-				printf("Ocurrio un error, llame al departamento de sistemas\n");
-				break;
+			retorno = 0;
+			printf("ERROR al listar jugadores\n");
+		}
+
+
+		if(utn_getNumero(&id, "Que id quiere dar de baja?\nNumero: ", "Numero no valido\nReingrese...\n",
+				1, 3000, 5)){
+
+			indice = validarExistenciaDeJugador(arrayJugadores, longitudJugadores, id);
+
+			if (indice == -1) {
+
+				retorno = 0;
 
 			}else{
 
-				indice = validarExistenciaDeJugador(arrayJugadores, longitudJugadores, id);
-
-			}
-			if (indice != -1) {
-
 				arrayJugadores[indice].isEmpty = 0;
 
-				mostrarDatoJugador(arrayJugadores[indice],arrayConfederaciones,longitudConfederaciones);
-
-				if(!getNumber(&confirmar, "\nConfirme si desea dar de baja\n"
-						"0-ELEGIR OTRO ID\n1- CONFIRMAR\nOPCION:", "\nNo es una opcion valida\n", 0,1)){
-
-					printf("Ocurrio un error, llame al departamento de sistemas\n");
-					break;
-				}
+				printf("| %5s | %25s | %15s | %15s | %15s | %20s | %15s |\n", "ID", "NOMBRE JUGADOR", "POSICION",
+													"N°CAMISETA", "SUELDO", "CONFEDERACION", "AÑOS DE CONTRATO");
+				mostrarDatoJugador(arrayJugadores[indice], arrayConfederaciones, longitudConfederaciones);
 
 			}
+		}else{
 
-		}while(confirmar != 1);
+			retorno = 0;
 
-		retorno = 0;
+		}
 	}
-
 	return retorno;
 }
 
@@ -270,36 +253,186 @@ int modificarJugador(eJugador arrayJugadores[], eConfederacion arrayConfederacio
 	int retorno = 0;
 	int id;
 	int indice;
+	int opcion;
 
 	if (arrayJugadores != NULL && longitudJugadores > 0) {
 
+		retorno = 1;
 
-		if(!listarJugadores(arrayJugadores, longitudJugadores,arrayConfederaciones,longitudConfederaciones)){
+		if(!listarJugadores(arrayJugadores, longitudJugadores, arrayConfederaciones, longitudConfederaciones)){
 
 			printf("Ocurrio un error, llame al departamento de sistemas\n");
 		}
 
-		if(getNumber(&id, "Que id quiere modificar?\nNumero: ", "Numero no valido\nReingrese El ID", 1, 3000)){
+		if(utn_getNumero(&id, "Que id quiere modificar?\nNumero: ", "Numero no valido\nReingrese El ID",
+							1, 3000, 5)){
 
 			indice = validarExistenciaDeJugador(arrayJugadores, longitudJugadores, id);
 
-		}
 
-		if (indice == -1) {
+			if (indice == -1) {
 
-			printf("No se encontro el ID seleccionado\n");
-			system("pause");
+				retorno = 0;
 
+			}else{
+
+				do{
+
+					mostrarMenuModificarJugador();
+					if(utn_getNumero(&opcion,"\nOpcion: ", "Opcion no valida", 1, 7, 5)){
+
+						printf("| %5s | %25s | %15s | %15s | %15s | %20s | %15s |\n", "ID", "NOMBRE JUGADOR", "POSICION",
+															"N°CAMISETA", "SUELDO", "CONFEDERACION", "AÑOS DE CONTRATO");
+						mostrarDatoJugador(arrayJugadores[indice], arrayConfederaciones, longitudConfederaciones);
+						switch (opcion) {
+
+						case 1:
+							if(!utn_getNombre(arrayJugadores[indice].nombre,50, "\nIngrese un nuevo nombre(max 50): ",
+									"Usted ingreso mas de 50 caracteres. REINTENTE\n", 5)){
+
+								retorno = 0;
+								break;
+							}
+							break;
+
+						case 2:
+							if(!seleccionarPosicion(arrayJugadores[indice].posicion)){
+
+
+								retorno = 0;
+								break;
+							}
+							break;
+
+						case 3:
+							if(!utn_getNumeroShort(&arrayJugadores[indice].numeroCamiseta, "\nIngrese un nuevo numero de camiseta entre 1-30: ",
+								"\nNo es posible ese numero\n", 1, 30, 5)){
+
+								retorno = 0;
+								break;
+							}
+							break;
+
+						case 4:
+							if(!utn_getNumero(&arrayJugadores[indice].idConfederacion,
+									"\nSeleccione nueva confederacion por ID: ", "\nID No valido\n", 100, 105, 5)){
+
+								retorno = 0;
+								break;
+							}
+							break;
+
+						case 5:
+							if(!utn_getNumeroFlotante(&arrayJugadores[indice].salario,
+								"\nIngrese nuevo Salario:(1000 - 1000000) $", "\nA ocurrido un error Inesperado\n",
+								1000,1000000,5)){
+
+								printf("Ocurrio un error, llame al departamento de sistemas\n");
+								break;
+							}
+							break;
+
+						case 6:
+							if(!utn_getNumeroShort(&arrayJugadores[indice].aniosContrato,
+								"\nIngrese los nuevos anios de contrato: ",
+							   "\nNo es posible tener tantos años de contrato\n", 1, 5, 5)){
+
+								printf("Ocurrio un error, llame al departamento de sistemas\n");
+								break;
+							}
+							break;
+
+						case 7:
+							printf("Usted ha vuelto al menu principal\n");
+							break;
+
+						}
+					}else{
+
+						printf("\nOcurrio un ERROR, Sera redirigido\n");
+						break;
+					}
+
+				}while(opcion != 7);
+			}
 		}else{
 
-			if(!menuModificarJugador(arrayJugadores, indice)){
+			retorno = 0;
+		}
+	}
+	return retorno;
+}
 
-				printf("Ocurrio un error, llame al departamento de sistemas\n");
+
+/**
+*\brief: Despliega opciones a elegir para la posicion del jugador.
+*\param: puntero a char.
+*\return: Retorna 1 para bien , Retorna 0 si no se logro.
+**/
+int seleccionarPosicion(char pPosicionElegida[]){
+
+
+	int retorno = 0;
+	int opcion;
+
+	if(pPosicionElegida != NULL){
+
+		mostrarPosiciones();
+		if(utn_getNumero(&opcion, "Opcion: ", "\nERROR opcion no validar\nReingrese\n", 1, 4, 5)){
+
+			switch(opcion){
+
+			case 1:
+				strncpy(pPosicionElegida, "Arquero",  50);
+				break;
+
+			case 2:
+				strncpy(pPosicionElegida, "Defensor",  50);
+				break;
+
+			case 3:
+				strncpy(pPosicionElegida, "Mediocentro", 50);
+				break;
+
+			case 4:
+				strncpy(pPosicionElegida, "Delantero", 50);
+				break;
+
+			}
+			retorno = 1;
+		}
+	}
+	return retorno;
+}
+
+/**
+*\brief: filtra jugadores por confederacion.
+*\param: array de tipo eJugador, int longitudArray, array de tipo eConfederacion, int logitudArray, int coincidencia
+*\return: Retorna 1 para bien , Retorna 0 si no se logro.
+**/
+int listarJugadoresPorRegion(eJugador arrayJugadores[], int longitudJugadores, eConfederacion arrayConfederaciones[],
+					int longitudConfederacion, int idConfederacion){
+
+	int retorno = 0;
+
+	if (arrayJugadores != NULL && longitudJugadores > 0) {
+
+		retorno = 1;
+
+		printf("| %5s | %25s | %15s | %5s | %10s | %12s | %15s |\n", "ID", "NOMBRE JUGADOR", "POSICION",
+											"N°CAMISETA", "SUELDO", "CONFEDERACION", "AÑOS DE CONTRATO");
+		for(int i = 0; i < longitudJugadores; i++){
+
+			if(arrayJugadores[i].isEmpty == 1 && arrayJugadores[i].idConfederacion == idConfederacion){
+
+				if(!mostrarDatoJugador(arrayJugadores[i], arrayConfederaciones, longitudConfederacion)){
+
+					retorno = 0;
+					break;
+				}
 			}
 		}
 		retorno = 1;
 	}
-
-
 	return retorno;
 }

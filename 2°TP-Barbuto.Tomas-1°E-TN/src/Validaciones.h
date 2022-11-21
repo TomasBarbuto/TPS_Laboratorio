@@ -8,13 +8,19 @@
 #ifndef VALIDACIONES_H_
 #define VALIDACIONES_H_
 
-int getNumber(int *pResultado, char *mensaje, char *mensajeError, int minimo,
-		int maximo);
-int getFloat(float *pResultado, char *mensaje, char *mensajeError, float minimo,
-		float maximo);
-int getString(char *pResultado, char *mensaje, char *mensajeError, int EspacioChar);
-int getShort(short *pResultado, char *mensaje, char *mensajeError, short minimo,short maximo);
-int getFloatSinLimite(float *pResultado, char *mensaje, char *mensajeError);
-
+int esNumerica(char cadena[]);
+int esUnNumero(char cadena[]);
+int getInt(int *pResultado);
+int utn_getNumero(int *pResultado, char *mensaje, char *mensajeError, int minimo, int maximo, int reintentos);
+int utn_getNumeroShort(short *pResultado, char *mensaje, char *mensajeError, int minimo, int maximo, int reintentos);
+int getFloat(float *pResultado);
+int esFlotante(char *cadena);
+int utn_getNumeroFlotante(float *pResultado, char *mensaje, char *mensajeError,
+							float minimo, float maximo, int reintentos);
+int getStringg(char *cadena, int longitud);
+int getString(char *cadena, int longitud);
+int getNombre(char* pResultado, int longitud);
+int esNombre(char* cadena,int longitud);
+int utn_getNombre(char* pResultado, int longitud,char* mensaje, char* mensajeError, int reintentos);
 
 #endif /* VALIDACIONES_H_ */
