@@ -446,12 +446,12 @@ int imprimirJugadorSeleccion(LinkedList* pArrayListaJugadores, LinkedList* pArra
 int jug_ordenarPorNacionalidad(void* jugadorA, void* jugadorB){
 
 	int retorno = 0;
-	char nacionalidadA[30];
-	char nacionalidadB[30];
+	char nacionalidadA[40];
+	char nacionalidadB[40];
 	Jugador* auxJugadorA;
 	Jugador* auxJugadorB;
 
-	auxJugadorA = (Jugador*)jugadorB;
+	auxJugadorA = (Jugador*)jugadorA;
 	auxJugadorB = (Jugador*)jugadorB;
 
 	if(jugadorA != NULL && jugadorB != NULL){
@@ -462,8 +462,8 @@ int jug_ordenarPorNacionalidad(void* jugadorA, void* jugadorB){
 			if(stricmp(nacionalidadA, nacionalidadB) > 0 ){
 
 				retorno = 1;
-			}
-			else if(stricmp(nacionalidadA, nacionalidadB) < 0){
+
+			}else if(stricmp(nacionalidadA, nacionalidadB) < 0){
 
 				retorno = -1;
 			}
@@ -494,6 +494,7 @@ int jug_ordenarPorNombre(void* jugadorA, void* jugadorB){
 		&& jug_getNombreCompleto(auxJugadorB, auxNombreB)){
 
 			if(stricmp(auxNombreA, auxNombreB) > 0 ){
+
 				retorno = 1;
 			}
 			else if(stricmp(auxNombreA, auxNombreB) < 0){
@@ -553,7 +554,7 @@ int jug_elegirNacionalidad(char pSeleccionElegida[]){
 
 		elegirNacionalidad();
 
-		if(getNumber(&opcion, "Opcion: ", "\nERROR opcion no validar\nReingrese\n", 1, 32)){
+		if(utn_getNumero(&opcion, "Opcion: ", "\nERROR opcion no validar\nReingrese\n", 1, 32, 3)){
 
 			switch(opcion){
 
@@ -688,7 +689,6 @@ int jug_elegirNacionalidad(char pSeleccionElegida[]){
 			retorno = 1;
 		}
 		printf("Usted selecciono %s\n", pSeleccionElegida);
-		system("pause");
 	}
 	return retorno;
 }
@@ -708,7 +708,7 @@ int jug_elegirPosicion(char pPosicionElegida[]){
 	if(pPosicionElegida != NULL){
 
 		elegirPosicion();
-		if(getNumber(&opcion, "Opcion: ", "\nERROR opcion no validar\nReingrese\n", 1, 32)){
+		if(utn_getNumero(&opcion, "Opcion: ", "\nERROR opcion no validar\nReingrese\n", 1, 13, 5)){
 
 			switch(opcion){
 
@@ -767,7 +767,6 @@ int jug_elegirPosicion(char pPosicionElegida[]){
 			retorno = 1;
 		}
 		printf("Usted selecciono %s\n", pPosicionElegida);
-		system("pause");
 	}
 	return retorno;
 }

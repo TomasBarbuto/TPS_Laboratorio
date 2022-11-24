@@ -157,3 +157,20 @@ int parser_SeleccionFromText(FILE* pFile , LinkedList* pArrayListSeleccion){
 	}
 	return retorno;
 }
+
+int parser_ArchivoIdFromText(FILE* pFile , char* auxiliarID){
+
+	int retorno = 0;
+	int retornoVariable;
+
+	if(pFile != NULL && auxiliarID != NULL){
+
+		retornoVariable = fscanf(pFile,"%[^\n]\n", auxiliarID);
+
+		if(retornoVariable == 1){
+
+			retorno = 1;
+		}
+	}
+	return retorno;
+}

@@ -210,13 +210,12 @@ int menuOrdenarListar(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 		do{
 
 			menuOrdenar();
-			if(getNumber(&opcionOrdenamiento,"\nOpcion: " ,"Error ingrese las opciones que se muestran en el menu\n"
-										, 1,3)){
+			if(utn_getNumero(&opcionOrdenamiento,"\nOpcion: " ,
+			"Error ingrese las opciones que se muestran en el menu\n", 1,3,5)){
 
 				switch(opcionOrdenamiento){
 
 				case 1:
-
 					if(!controller_ordenarJugadores(listaJugadores)){
 
 						printf("Falla al entrar al menu\n");
@@ -235,7 +234,6 @@ int menuOrdenarListar(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 					break;
 				case 3:
 					printf("Sera redirigido al menu principal\n");
-					system("pause");
 					break;
 				}
 			}else{
@@ -266,7 +264,7 @@ int menuListar(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 		do{
 			menuListados();
 
-			if(getNumber(&opcionListar, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 4)){
+			if(utn_getNumero(&opcionListar, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 4,5)){
 
 				switch(opcionListar){
 
@@ -299,7 +297,6 @@ int menuListar(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 
 				case 4:
 					printf("Sera redirigido al menu principal\n");
-					system("pause");
 					break;
 				}
 			}else{
@@ -330,7 +327,7 @@ int menuConvocarJugadores(LinkedList* listaJugadores, LinkedList* listaSeleccion
 
 		do{
 			menuConvocados();
-			if(getNumber(&opcionConvocar, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 3)){
+			if(utn_getNumero(&opcionConvocar, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 3, 5)){
 
 				switch(opcionConvocar){
 
@@ -338,13 +335,12 @@ int menuConvocarJugadores(LinkedList* listaJugadores, LinkedList* listaSeleccion
 					if(controller_ConvocarJugadores(listaSelecciones, listaJugadores)){
 
 						printf("Se convoco exitosamente\n");
+
 					}else{
 
 						retorno = 0;
-						printf("ERROR, reintente nuevamente\n");
 						break;
 					}
-					system("pause");
 					break;
 
 				case 2:
@@ -352,16 +348,15 @@ int menuConvocarJugadores(LinkedList* listaJugadores, LinkedList* listaSeleccion
 
 						printf("Se removio exitosamente\n");
 					}else{
+
 						retorno = 0;
 						printf("ERROR, reintente nuevamente\n");
 						break;
 					}
-					system("pause");
 					break;
 
 				case 3:
 					printf("Sera redirigido al menu principal\n");
-					system("pause");
 					break;
 				}
 			}else{
@@ -381,7 +376,7 @@ int menuConvocarJugadores(LinkedList* listaJugadores, LinkedList* listaSeleccion
  * \param LinkedList* listaJugadores, LinkedList* listaSelecciones, int
  * \return int 1 bien, 0 ERROR.
 **/
-int menuGuardarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones, int* FlagBinario){
+int menuGuardarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 
 	int retorno = 0;
 	int opcionGuardarBinario;
@@ -394,7 +389,7 @@ int menuGuardarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones,
 		do{
 
 			menuArchivoBinario();
-			if(getNumber(&opcionGuardarBinario, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 6)){
+			if(utn_getNumero(&opcionGuardarBinario, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 6, 5)){
 
 				switch(opcionGuardarBinario){
 
@@ -403,12 +398,11 @@ int menuGuardarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones,
 					if(controller_guardarJugadorPorConfederacionBinario("AFC.bin", listaJugadores,
 																listaSelecciones, confederacion)){
 						printf("Se guardo el archivo correctamente 'AFC.bin' \n");
-						*FlagBinario = 1;
+
 					}else{
 
 						printf("No hay jugadores convocados de la confederacion elegida\n");
 					}
-					system("pause");
 					break;
 
 				case 2:
@@ -416,12 +410,11 @@ int menuGuardarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones,
 					if(controller_guardarJugadorPorConfederacionBinario("CAF.bin", listaJugadores,
 																	listaSelecciones, confederacion)){
 						printf("Se guardo el archivo correctamente 'CAF.bin' \n");
-						*FlagBinario = 1;
+
 					}else{
 
 						printf("No hay jugadores convocados de la confederacion elegida\n");
 					}
-					system("pause");
 					break;
 
 				case 3:
@@ -429,12 +422,11 @@ int menuGuardarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones,
 					if(controller_guardarJugadorPorConfederacionBinario("CONCACAF.bin", listaJugadores,
 																	listaSelecciones, confederacion)){
 						printf("Se guardo el archivo correctamente 'CONCACAF.bin' \n");
-						*FlagBinario = 1;
+
 					}else{
 
 						printf("No hay jugadores convocados de la confederacion elegida\n");
 					}
-					system("pause");
 					break;
 
 				case 4:
@@ -442,12 +434,11 @@ int menuGuardarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones,
 					if(controller_guardarJugadorPorConfederacionBinario("CONMEBOL.bin", listaJugadores,
 																listaSelecciones, confederacion)){
 						printf("Se guardo el archivo correctamente 'CONMEBOL.bin' \n");
-						*FlagBinario = 1;
+
 					}else{
 
 						printf("No hay jugadores convocados de la confederacion elegida\n");
 					}
-					system("pause");
 					break;
 
 				case 5:
@@ -455,17 +446,15 @@ int menuGuardarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones,
 					if(controller_guardarJugadorPorConfederacionBinario("UEFA.bin", listaJugadores,
 																	listaSelecciones, confederacion)){
 						printf("Se guardo el archivo correctamente 'UEFA.bin' \n");
-						*FlagBinario = 1;
+
 					}else{
 
 						printf("No hay jugadores convocados de la confederacion elegida\n");
 					}
-					system("pause");
 					break;
 
 				case 6:
 					printf("Sera redirigido al menu principal\n");
-					system("pause");
 					break;
 				}
 			}else{
@@ -497,7 +486,7 @@ int menuCargarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 		do{
 
 			menuArchivoBinario();
-			if(getNumber(&opcionGuardarBinario, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 6)){
+			if(utn_getNumero(&opcionGuardarBinario, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 6, 5)){
 
 				switch(opcionGuardarBinario){
 
@@ -513,7 +502,6 @@ int menuCargarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 						printf("No hay jugadores convocados de la confederacion elegida\n");
 
 					}
-					system("pause");
 					break;
 
 				case 2:
@@ -526,9 +514,7 @@ int menuCargarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 
 						printf("No hay jugadores convocados de la confederacion elegida\n");
 
-
 					}
-					system("pause");
 					break;
 
 				case 3:
@@ -542,7 +528,6 @@ int menuCargarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 						printf("No hay jugadores convocados de la confederacion elegida\n");
 
 					}
-					system("pause");
 					break;
 
 				case 4:
@@ -556,7 +541,6 @@ int menuCargarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 						printf("No hay jugadores convocados de la confederacion elegida\n");
 
 					}
-					system("pause");
 					break;
 
 				case 5:
@@ -570,14 +554,17 @@ int menuCargarBinario(LinkedList* listaJugadores, LinkedList* listaSelecciones){
 						printf("No hay jugadores convocados de la confederacion elegida\n");
 
 					}
-					system("pause");
 					break;
 
 				case 6:
 					printf("Sera redirigido al menu principal\n");
-					system("pause");
 					break;
 				}
+			}else{
+
+				printf("Supero la cantidad de reintentos, sera redirigido al menu principal\n");
+				retorno = 0;
+				break;
 			}
 		}while(opcionGuardarBinario != 6);
 	}

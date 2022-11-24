@@ -19,7 +19,7 @@
 */
 int controller_cargarJugadoresDesdeTexto(char* path, LinkedList* pArrayListJugador){
 
-	int retorno;
+	int retorno = 0;
 	FILE* pArchivo = NULL;
 
 	if(path != NULL && pArrayListJugador != NULL){
@@ -31,9 +31,6 @@ int controller_cargarJugadoresDesdeTexto(char* path, LinkedList* pArrayListJugad
 			if(parser_JugadorFromText(pArchivo, pArrayListJugador)){
 
 				retorno = 1;
-			}else{
-
-				retorno = 0;
 			}
 		}
 		fclose(pArchivo);
@@ -50,7 +47,7 @@ int controller_cargarJugadoresDesdeTexto(char* path, LinkedList* pArrayListJugad
 */
 int controller_cargarJugadoresDesdeBinario(char* path , LinkedList* pArrayListJugador){
 
-	int retorno;
+	int retorno = 0;
 	FILE* pArchivo = NULL;
 
 	if(path != NULL && pArrayListJugador != NULL){
@@ -62,10 +59,6 @@ int controller_cargarJugadoresDesdeBinario(char* path , LinkedList* pArrayListJu
 			if(parser_JugadorFromBinary(pArchivo, pArrayListJugador)){
 
 				retorno = 1;
-
-			}else{
-
-				retorno = 0;
 			}
 		}
 		fclose(pArchivo);
@@ -93,8 +86,9 @@ int controller_agregarJugador(LinkedList* pArrayListJugador){
 
 	if(pArrayListJugador != NULL){
 
-		if(getString(auxNombreCompleto,"\nIngrese Nombre: ", "\nError reingrese: ", 100) &&
-		   getNumber(&auxEdad, "\nIngrese Edad: ", "\nError reingrese: ", 16, 45) &&
+
+		if(utn_getNombre(auxNombreCompleto, 100, "\nIngrese Nombre: ", "\nError reingrese...\n", 5) &&
+		   utn_getNumero(&auxEdad, "\nIngrese Edad: ", "\nError reingrese...\n", 16, 45, 5) &&
 		   jug_elegirNacionalidad(auxNacionalidad) &&
 		   jug_elegirPosicion(auxPosicion)){
 
@@ -115,9 +109,6 @@ int controller_agregarJugador(LinkedList* pArrayListJugador){
 					if(ll_add(pArrayListJugador, NuevoJugador) == 0){
 
 						retorno = 1;
-					}else{
-
-						retorno = 0;
 					}
 				}
 			 }else{
@@ -141,6 +132,8 @@ int controller_editarJugador(LinkedList* pArrayListJugador){
 
 	int retorno = 0;
 	int idBuscar;
+	int indiceMaximo;
+	int contador = 0;
 	int indice;
 	int opcion;
 	char nuevoNombre[100];
@@ -154,8 +147,10 @@ int controller_editarJugador(LinkedList* pArrayListJugador){
 		retorno = 1;
 		if(controller_listarJugadores(pArrayListJugador)){
 
-			if(getNumber(&idBuscar, "\nSeleccione el ID: ", "\nError Reingrese el ID: ", 1,
-					ll_len(pArrayListJugador))){
+			indiceMaximo = buscarIdMaximo(pArrayListJugador);// con esto saco el id maximo generado que sera el ultimo cargado.
+
+			if(utn_getNumero(&idBuscar, "\nSeleccione el ID: ", "\nError Reingrese el ID: ", 1,
+					indiceMaximo, 5)){
 
 				indice = validarExistenciaDeJugador(pArrayListJugador, idBuscar);
 
@@ -174,13 +169,13 @@ int controller_editarJugador(LinkedList* pArrayListJugador){
 								break;
 							}
 							menuModificar();
-							if(getNumber(&opcion,"\nOpcion: ", "\nOpcion no valida\nReingrese: ", 1, 5)){
+							if(utn_getNumero(&opcion,"\nOpcion: ", "\nOpcion no valida\nReingrese: ", 1, 5, 5)){
 
 								switch(opcion){
 
 								case 1:
-									if(getString(nuevoNombre, "\nIngrese el nuevo nombre: ",
-											"\nSupero la cantidad de caracteres maximos\nReingrese: ", 100)){
+									if(utn_getNombre(nuevoNombre, 100, "\nIngrese el nuevo nombre: ",
+											"\nSupero la cantidad de caracteres maximos\nReingrese...\n", 5)){
 
 										if(!jug_setNombreCompleto(auxJugador, nuevoNombre)){
 
@@ -188,13 +183,13 @@ int controller_editarJugador(LinkedList* pArrayListJugador){
 											retorno = 0;
 											break;
 										}
+										contador++;
 									}
-
 									break;
 
 								case 2:
-									if(getNumber(&nuevaEdad, "\nIngrese la nueva edad: ",
-											"\nSu edad debe ser mayor a 16 y menor a 40", 16, 40)){
+									if(utn_getNumero(&nuevaEdad, "\nIngrese la nueva edad: ",
+											"\nSu edad debe ser mayor a 16 y menor a 40", 16, 40, 5)){
 
 										if(!jug_setEdad(auxJugador, nuevaEdad)){
 
@@ -202,7 +197,7 @@ int controller_editarJugador(LinkedList* pArrayListJugador){
 											retorno = 0;
 											break;
 										}
-
+										contador++;
 									}
 									break;
 								case 3:
@@ -214,7 +209,7 @@ int controller_editarJugador(LinkedList* pArrayListJugador){
 											retorno = 0;
 											break;
 										}
-
+										contador++;
 									}
 									break;
 								case 4:
@@ -226,7 +221,7 @@ int controller_editarJugador(LinkedList* pArrayListJugador){
 											retorno = 0;
 											break;
 										}
-
+										contador++;
 									}
 									break;
 
@@ -234,12 +229,20 @@ int controller_editarJugador(LinkedList* pArrayListJugador){
 									printf("Salio del menu modificar\n");
 									break;
 								}
+							}else{
+
+								printf("Se acabaron los reintentos, sera redirigido al menu principal\n");
+								break;
 							}
 						}while(opcion != 5);
 					}
 				}
 			}
 		}
+	}
+	if(contador == 0){
+
+		retorno = 0;
 	}
     return retorno;
 }
@@ -255,6 +258,7 @@ int controller_removerJugador(LinkedList* pArrayListJugador, LinkedList* pArrayL
 
 	int retorno = 0;
 	int indice;
+	int indiceMaximo;
 	int idBuscar;
 	int confirmar;
 	int indiceSeleccion;
@@ -267,9 +271,10 @@ int controller_removerJugador(LinkedList* pArrayListJugador, LinkedList* pArrayL
 
 		if(controller_listarJugadores(pArrayListJugador)){
 
-			if(getNumber(&idBuscar, "\nSeleccione el ID: ", "\nError Reingrese el ID: ", 1,
-					ll_len(pArrayListJugador))){
+			indiceMaximo = buscarIdMaximo(pArrayListJugador);
 
+			if(utn_getNumero(&idBuscar, "\nSeleccione el ID: ", "\nError Reingrese el ID: ", 1,
+					indiceMaximo, 5)){
 
 				indice = validarExistenciaDeJugador(pArrayListJugador, idBuscar);
 
@@ -277,47 +282,54 @@ int controller_removerJugador(LinkedList* pArrayListJugador, LinkedList* pArrayL
 
 					auxJugador = (Jugador*) ll_get(pArrayListJugador, indice);
 
-					if(imprimirJugador(pArrayListJugador, indice)&&
-							getNumber(&confirmar, "Ingrese 1 para BORRAR o 0 para volver al menu principal\n",
-									"\nOpcion no Valida\nReingrese: ", 0, 1) && auxJugador != NULL){
-
-						if(confirmar == 1){
-
-							if(jug_getIdSeleccion(auxJugador, &idSeleccion) && idSeleccion != 0){
-
-								indiceSeleccion = validarExistenciaDeSeleccion(pArrayListSeleccion, idSeleccion);
-
-								if(indiceSeleccion != -1){
-
-									auxSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, indiceSeleccion);
-
-									if(auxSeleccion != NULL){
-
-										if(selec_getConvocados(auxSeleccion, &convocados)){
-
-											convocados--;
-
-											if(selec_setConvocados(auxSeleccion, convocados)){
+					if(imprimirJugador(pArrayListJugador, indice) && auxJugador != NULL){
 
 
+						if(jug_getIdSeleccion(auxJugador, &idSeleccion) && idSeleccion != 0){
+
+							printf("El jugador que esta por borrar esta convocado a una selecccion\n");
+
+							if(utn_getNumero(&confirmar, "Ingrese 1 para BORRAR o 0 para volver al menu principal\n",
+								"\nOpcion no Valida\nReingrese..\n", 0, 1, 3)){
+
+								if(confirmar == 1){
+
+									indiceSeleccion = validarExistenciaDeSeleccion(pArrayListSeleccion, idSeleccion);
+
+									if(indiceSeleccion != -1){
+
+										auxSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, indiceSeleccion);
+
+										if(auxSeleccion != NULL){
+
+											if(selec_getConvocados(auxSeleccion, &convocados)){
+
+												convocados--;
+
+												if(selec_setConvocados(auxSeleccion, convocados)){
+
+												}
 											}
 										}
 									}
+
+								}else{
+
+									retorno = 0;
+									printf("Sera redirigido al menu principal\n");
 								}
 							}
+						}
+						if(ll_remove(pArrayListJugador, indice) == 0){
 
 							jug_delete(auxJugador);
-
-							if(ll_remove(pArrayListJugador, indice) == 0){
-
-								retorno = 1;
-							}
-						}else{
-
 							retorno = 1;
-							printf("Sera redirigido al menu principal\n");
 						}
 					}
+				}else{
+
+					retorno = 0;
+					printf("No existe tal ID\nSera redirigido al menu principal\n");
 				}
 			}
 		}
@@ -381,16 +393,16 @@ int controller_ordenarJugadores(LinkedList* pArrayListJugador){
 
 			menuOrdenarJugadores();
 
-			if(getNumber(&opcionOrdenamientoJugador,"\nOpcion: " ,
-					"Error ingrese las opciones que se muestran en el menu\n", 1,4)){
+			if(utn_getNumero(&opcionOrdenamientoJugador,"\nOpcion: " ,
+					"Error ingrese las opciones que se muestran en el menu\n", 1, 4, 5)){
 
 				switch(opcionOrdenamientoJugador){
 
 				case 1:
-					if(getNumber(&orden, "Ingrese el orden que desea listar\n"
+					if(utn_getNumero(&orden, "Ingrese el orden que desea listar\n"
 									  "1-Ascendente\n"
 									  "0-Descendente\n"
-									  "Opcion: ","ERROR, VALOR NO VALIDO\n", 0, 1)){
+									  "Opcion: ","ERROR, VALOR NO VALIDO\n", 0, 1, 3)){
 
 						if(!ll_sort(pArrayListJugador, jug_ordenarPorNacionalidad, orden)){
 
@@ -413,10 +425,10 @@ int controller_ordenarJugadores(LinkedList* pArrayListJugador){
 					break;
 
 				case 2:
-					if(getNumber(&orden, "Ingrese el orden que desea listar\n"
+					if(utn_getNumero(&orden, "Ingrese el orden que desea listar\n"
 									  "1-Ascendente\n"
 									  "0-Descendente\n"
-									  "Opcion: ", "ERROR, VALOR NO VALIDO\n", 0, 1)){
+									  "Opcion: ", "ERROR, VALOR NO VALIDO\n", 0, 1, 3)){
 
 						if(!ll_sort(pArrayListJugador, jug_ordenarPorNombre, orden)){
 
@@ -439,10 +451,10 @@ int controller_ordenarJugadores(LinkedList* pArrayListJugador){
 					break;
 
 				case 3:
-					if(getNumber(&orden, "Ingrese el orden que desea listar\n"
+					if(utn_getNumero(&orden, "Ingrese el orden que desea listar\n"
 									  "1-Ascendente\n"
 									  "0-Descendente\n"
-									  "Opcion: ", "ERROR, VALOR NO VALIDO\n", 0, 1)){
+									  "Opcion: ", "ERROR, VALOR NO VALIDO\n", 0, 1, 3)){
 
 						if(!ll_sort(pArrayListJugador, jug_ordenarPorEdad, orden)){
 
@@ -471,7 +483,7 @@ int controller_ordenarJugadores(LinkedList* pArrayListJugador){
 
 			}else{
 
-				printf("ERROR Menu no disponible\n");
+				printf("Se acabaron los reintentos, sera redirigido al menu principal\n");
 				retorno = 0;
 				break;
 			}
@@ -491,9 +503,8 @@ int controller_guardarJugadoresModoTexto(char* path, LinkedList* pArrayListJugad
 
 	int retorno = 0;
 	FILE* pArchivo;
-	int longitud; //longitud de linkedList
+	int longitud;
 	Jugador *auxJugador;
-	//Campos de struct Jugador.
 	int auxId;
 	char auxNombreCompleto[100];
 	int auxEdad;
@@ -524,11 +535,10 @@ int controller_guardarJugadoresModoTexto(char* path, LinkedList* pArrayListJugad
 					&& jug_getNacionalidad(auxJugador, auxNacionalidad)
 					&& jug_getIdSeleccion(auxJugador, &auxIdSeleccion)){
 
-						//retorna numero de bytes escritos.
 						retornoFprintf = fprintf(pArchivo, "%d,%s,%d,%s,%s,%d\n" , auxId, auxNombreCompleto, auxEdad, auxPosicion,
-													auxNacionalidad, auxIdSeleccion);//Escribe el archivo.
+													auxNacionalidad, auxIdSeleccion);
 
-						if(retornoFprintf == 7){
+						if(retornoFprintf > 0){
 
 							retorno = 1;
 						}
@@ -567,7 +577,6 @@ int controller_guardarJugadoresModoBinario(char* path , LinkedList* pArrayListJu
 
 				if(auxJugador != NULL){
 
-					//Retorna el número de elementos completos que escribe la función
 					retornoFwrite = fwrite(auxJugador, sizeof(Jugador), 1, pArchivo);
 
 					if(retornoFwrite == 1){
@@ -642,8 +651,8 @@ int controller_editarSeleccion(LinkedList* pArrayListSeleccion){
 
 		if(controller_listarSelecciones(pArrayListSeleccion)){
 
-			if(getNumber(&idSeleccion, "\nSeleccione el ID: ", "\nError Reingrese el ID: ", 1,
-				ll_len(pArrayListSeleccion))){
+			if(utn_getNumero(&idSeleccion, "\nSeleccione el ID: ", "\nError Reingrese el ID: ", 1,
+				32, 5)){
 
 				indice = validarExistenciaDeSeleccion(pArrayListSeleccion, idSeleccion);
 
@@ -656,7 +665,7 @@ int controller_editarSeleccion(LinkedList* pArrayListSeleccion){
 						do{
 							printf("|%10s | %25s | %10s | %20s |\n", "ID", "CONFEDERACION", "CONVOCADOS", "PAIS");
 
-							if(getNumber(&opcion,"\nOpcion: ", "\nOpcion no valida\nReingrese: ", 1, 5)
+							if(utn_getNumero(&opcion,"\nOpcion: ", "\nOpcion no valida\nReingrese..\n", 1, 2, 5)
 							&& imprimirSeleccion(pArrayListSeleccion, indice)){
 
 
@@ -664,8 +673,8 @@ int controller_editarSeleccion(LinkedList* pArrayListSeleccion){
 
 								case 1:
 									if(!selec_setConvocados(auxSeleccion, convocados) &&
-									!getNumber(&convocados, "\nIngrese nueva cantidad de convocados: ",
-									"\nNo puede ser mayor a 22", 1, 22)){
+									!utn_getNumero(&convocados, "\nIngrese nueva cantidad de convocados: ",
+									"\nNo puede ser mayor a 22", 1, 22, 5)){
 
 										printf("ERROR\n");
 										retorno = 0;
@@ -678,6 +687,7 @@ int controller_editarSeleccion(LinkedList* pArrayListSeleccion){
 									break;
 								}
 							}else{
+
 								retorno = 0;
 								break;
 							}
@@ -737,7 +747,7 @@ int controller_ordenarSelecciones(LinkedList* pArrayListSeleccion){
 
 	int retorno = 0;
 	int orden;
-	int opcionOrdenamientoJugador;
+	int opcionOrdenamientoSeleccion;
 
 	if(pArrayListSeleccion != NULL){
 
@@ -747,16 +757,16 @@ int controller_ordenarSelecciones(LinkedList* pArrayListSeleccion){
 
 			menuOrdenarSelecciones();
 
-			if(getNumber(&opcionOrdenamientoJugador,"\nOpcion: " ,
-					"Error ingrese las opciones que se muestran en el menu\n", 1,2)){
+			if(utn_getNumero(&opcionOrdenamientoSeleccion,"\nOpcion: " ,
+					"Error ingrese las opciones que se muestran en el menu\n", 1,2, 5)){
 
-				switch(opcionOrdenamientoJugador){
+				switch(opcionOrdenamientoSeleccion){
 
 				case 1:
-					if(getNumber(&orden, "Ingrese el orden que desea listar\n"
+					if(utn_getNumero(&orden, "Ingrese el orden que desea listar\n"
 									  "1-Ascendente\n"
 									  "0-Descendente\n"
-									  "Opcion: ", "ERROR, VALOR NO VALIDO\n", 0, 1)){
+									  "Opcion: ", "ERROR, VALOR NO VALIDO\n", 0, 1, 3)){
 
 						if(!ll_sort(pArrayListSeleccion, selec_ordenarPorConfederacion, orden)){
 
@@ -780,7 +790,7 @@ int controller_ordenarSelecciones(LinkedList* pArrayListSeleccion){
 					break;
 				}
 			}
-		}while(opcionOrdenamientoJugador != 2);
+		}while(opcionOrdenamientoSeleccion != 2);
 	}
     return retorno;
 }
@@ -795,9 +805,8 @@ int controller_guardarSeleccionesModoTexto(char* path , LinkedList* pArrayListSe
 
 	int retorno = 0;
 	FILE* pArchivo;
-	int longitud; //longitud de linkedList
+	int longitud;
 	Seleccion *auxSelecion;
-	//Campos de struct Jugador.
 	int auxId;
 	char auxPais[30];
 	char auxConfederacion[30];
@@ -828,7 +837,7 @@ int controller_guardarSeleccionesModoTexto(char* path , LinkedList* pArrayListSe
 						retornoFprintf = fprintf(pArchivo, "%d,%s,%s,%d,\n" , auxId, auxPais, auxConfederacion,
 													auxConvocados);//Escribe el archivo.
 
-						if(retornoFprintf == 4){
+						if(retornoFprintf > 0){
 
 							retorno = 1;
 						}
@@ -851,7 +860,9 @@ int controller_ConvocarJugadores(LinkedList* pArrayListSeleccion, LinkedList* pA
 
 	int retorno = 0;
 	int idSeleccion;
+	int idJugadorSeleccion;
 	int buscarId;
+	int indiceMaximo;
 	int indice;
 	int indiceSeleccion;
 	int convocados = 0;
@@ -862,8 +873,10 @@ int controller_ConvocarJugadores(LinkedList* pArrayListSeleccion, LinkedList* pA
 
 		if(controller_listarJugadoresNoConvocados(pArrayListJugador)){
 
-			if(getNumber(&buscarId, "\nSeleccione el Jugador a convocar por su ID: ",
-					"\nError Reingrese el ID: ", 1, ll_len(pArrayListJugador))){
+			indiceMaximo = buscarIdMaximo(pArrayListJugador);
+
+			if(utn_getNumero(&buscarId, "\nSeleccione el Jugador a convocar por su ID: ",
+					"\nError Reingrese el ID: ", 1, indiceMaximo, 3)){
 
 				indice = validarExistenciaDeJugador(pArrayListJugador, buscarId);
 
@@ -871,32 +884,44 @@ int controller_ConvocarJugadores(LinkedList* pArrayListSeleccion, LinkedList* pA
 
 					auxJugador = (Jugador*) ll_get(pArrayListJugador, indice);
 
-					if(auxJugador != NULL){
+					if(jug_getIdSeleccion(auxJugador, &idJugadorSeleccion)){
 
-						if(controller_listarSelecciones(pArrayListSeleccion)
-						&& getNumber(&idSeleccion, "\nIngrese a que seleccion sera convocado: ",
-									"\nNo existe una seleccion con ese ID\nReingrese: ", 1, 32)){
+						if(auxJugador != NULL && idJugadorSeleccion == 0){
 
-							indiceSeleccion = validarExistenciaDeSeleccion(pArrayListSeleccion, idSeleccion);
+							if(controller_listarSelecciones(pArrayListSeleccion)
+							&& utn_getNumero(&idSeleccion, "\nIngrese a que seleccion sera convocado: ",
+										"\nNo existe una seleccion con ese ID\nReingrese...\n", 1, 32, 3)){
 
-							auxSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, indiceSeleccion);
+								indiceSeleccion = validarExistenciaDeSeleccion(pArrayListSeleccion, idSeleccion);
 
-							if(auxSeleccion != NULL){
+								auxSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, indiceSeleccion);
 
-								if(selec_getConvocados(auxSeleccion, &convocados)){
+								if(auxSeleccion != NULL){
 
-									if(jug_setIdSeleccion(auxJugador, idSeleccion)){
+									if(selec_getConvocados(auxSeleccion, &convocados)){
 
-										convocados++;
+										if(convocados < 22){
 
-										if(selec_setConvocados(auxSeleccion, convocados)){
+											if(jug_setIdSeleccion(auxJugador, idSeleccion)){
 
-											retorno = 1;
+												convocados++;
 
+												if(selec_setConvocados(auxSeleccion, convocados)){
+
+													retorno = 1;
+
+												}
+											}
+										}else{
+
+											printf("La seleccion elegida, llego a la capacidad maxima de convocados\n");
 										}
 									}
 								}
 							}
+						}else{
+
+							printf("El jugador ya fue convocado previamente\n");
 						}
 					}
 				}
@@ -944,7 +969,6 @@ int controller_ListarConvocados(LinkedList* pArrayListJugador, LinkedList* pArra
 		if(contador == 0){
 
 			printf("NO HAY JUGADORES CONVOCADOS HASTA EL MOMENTO\n");
-			system("Pause");
 		}
 	}
 
@@ -957,32 +981,21 @@ int controller_ListarConvocados(LinkedList* pArrayListJugador, LinkedList* pArra
 * \param auxId char*
 * \return int
 **/
-int controller_cargarIdAutoincremental(char* path, char* auxid){
+int controller_cargarIdAutoincremental(char* path, char* auxiliarID){
 
-	FILE* pArchivo = NULL;
-	int retornoFscanf;
-	int retorno = 0;
+    int retorno = 0;
+    FILE* pArchivo = NULL;
 
-	if(path != NULL && auxid != NULL){
+    pArchivo = fopen(path,"r");
 
-		pArchivo = fopen(path, "r");
+    if(pArchivo != NULL){
 
-		if(pArchivo != NULL){
+        if(parser_ArchivoIdFromText(pArchivo, auxiliarID)){
 
-			retornoFscanf = fscanf(pArchivo, "%[^\n]\n", auxid);
-
-			if(retornoFscanf == 1){
-
-				retorno = 1;
-			}else{
-
-				printf("ERROR\n");
-			}
-		}
-		fclose(pArchivo);
-	}
-
-	return retorno;
+            retorno = 1;
+        }
+    }
+    return retorno;
 }
 
 /**
@@ -1027,6 +1040,7 @@ int controller_removerJugadorDeSeleccion(LinkedList* pArrayListSeleccion, Linked
     int retorno = 0;
     int idJugador;
     int indiceJugador;
+    int indiceMaximo;
     int seleccion;
     int indiceSelecccion;
     int convocados;
@@ -1035,9 +1049,11 @@ int controller_removerJugadorDeSeleccion(LinkedList* pArrayListSeleccion, Linked
 
     if(pArrayListSeleccion != NULL  && pArrayListJugador != NULL){
 
+    	indiceMaximo = buscarIdMaximo(pArrayListJugador);
+
 		if(controller_ListarConvocados(pArrayListJugador, pArrayListSeleccion)
-		&& getNumber(&idJugador, "\nIngrese ID del jugador para quitar de la seleccion",
-				"\nError al ingresar ID", 1, ll_len(pArrayListJugador))){
+		&& utn_getNumero(&idJugador, "\nIngrese ID del jugador para quitar de la seleccion",
+				"\nError al ingresar ID\n", 1, indiceMaximo, 5)){
 
 			indiceJugador = validarExistenciaDeJugador(pArrayListJugador, idJugador);
 
@@ -1143,7 +1159,7 @@ int controller_guardarJugadorPorConfederacionBinario(char *path, LinkedList* pAr
 				}
 			}
 		}
-		if(ll_clear(nuevaLista) && ll_deleteLinkedList(nuevaLista)){
+		if(ll_clear(nuevaLista) != 0 && ll_deleteLinkedList(nuevaLista) != 0){
 
 			retorno = 0;
 		}
@@ -1198,7 +1214,7 @@ int controller_cargarJugadoresPorConfederacionBinario(char *path, LinkedList* pA
 					printf("ERROR al listar jugadores\n");
 				}
 			}
-			if(ll_clear(nuevaLista) && ll_deleteLinkedList(nuevaLista)){
+			if(ll_clear(nuevaLista) != 0 && ll_deleteLinkedList(nuevaLista) != 0){
 
 				retorno = 0;
 			}
@@ -1242,3 +1258,44 @@ int controller_listarJugadoresNoConvocados(LinkedList* pArrayListJugador){
 	return retorno;
 }
 
+int buscarIdMaximo(LinkedList* pArrayListJugador){
+
+	int retorno = 0;
+	int idMayor;
+	int auxId;
+	int flag = 0;
+	int retornoId;
+	Jugador* auxJugador;
+
+	if(pArrayListJugador != NULL){
+
+		for(int i = 0; i < ll_len(pArrayListJugador); i++){
+
+			auxJugador = ll_get(pArrayListJugador, i);
+
+			if(auxJugador != NULL){
+
+				if(jug_getId(auxJugador, &auxId)){
+
+					retorno = 1;
+
+					if(flag == 0){
+
+						idMayor = auxId;
+						flag = 1;
+
+					}else if(idMayor < auxId){
+
+						idMayor = auxId;
+					}
+				}
+			}
+		}
+	}
+	if(retorno == 1){
+
+		retornoId = idMayor;
+	}
+
+	return retornoId;
+}

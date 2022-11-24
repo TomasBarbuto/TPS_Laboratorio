@@ -24,3 +24,4 @@ int controller_guardarJugadorPorConfederacionBinario(char *path, LinkedList* pAr
 int controller_cargarJugadoresPorConfederacionBinario(char *path, LinkedList* pArrayListJugador,
 										      LinkedList* pArrayListSeleccion, char Confederacion[]);
 int controller_listarJugadoresNoConvocados(LinkedList* pArrayListJugador);
+int buscarIdMaximo(LinkedList* pArrayListJugador);
