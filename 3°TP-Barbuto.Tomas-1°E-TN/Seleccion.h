@@ -23,10 +23,6 @@ int selec_getConfederacion(Seleccion* this, char* confederacion);
 int selec_setConvocados(Seleccion* this, int convocados);
 int selec_getConvocados(Seleccion* this, int* convocados);
 
-int imprimirSeleccion(LinkedList* pArrayListaSelecciones, int index);
-int validarExistenciaDeSeleccion(LinkedList* pArrayListaSelecciones, int idParam);
-int buscarNombreDeConfederacion(LinkedList *pArrayListSeleccion, int idSeleccion, char pConfederacion[]);
-int buscarNombreDeSeleccion(LinkedList *pArrayListSeleccion, int idSeleccion, char pSeleccion[]);
 int selec_ordenarPorConfederacion(void* elementoA, void* elementoB);
 
 

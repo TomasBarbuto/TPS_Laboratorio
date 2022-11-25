@@ -24,4 +24,11 @@ int controller_guardarJugadorPorConfederacionBinario(char *path, LinkedList* pAr
 int controller_cargarJugadoresPorConfederacionBinario(char *path, LinkedList* pArrayListJugador,
 										      LinkedList* pArrayListSeleccion, char Confederacion[]);
 int controller_listarJugadoresNoConvocados(LinkedList* pArrayListJugador);
+int imprimirJugador(LinkedList* pArrayListaJugadores, int index);
+int validarExistenciaDeJugador(LinkedList* pArrayJugadores, int idParam);
+int imprimirJugadorSeleccion(LinkedList* pArrayListaJugadores, LinkedList* pArrayListaSeleccion, int index);
+int imprimirSeleccion(LinkedList* pArrayListaSelecciones, int index);
+int validarExistenciaDeSeleccion(LinkedList* pArrayListaSelecciones, int idParam);
+int buscarNombreDeConfederacion(LinkedList *pArrayListSeleccion, int idSeleccion, char pConfederacion[]);
+int buscarNombreDeSeleccion(LinkedList *pArrayListSeleccion, int idSeleccion, char pSeleccion[]);
 int buscarIdMaximo(LinkedList* pArrayListJugador);

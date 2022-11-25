@@ -11,7 +11,13 @@ int main(){
 	setbuf(stdout,NULL);
 
 	int opcion;
-	int ultimoId;
+	int opcionListar;
+	int opcionConvocar;
+	int opcionGuardarBinario;
+	int opcionCargarBinario;
+	int opcionOrdenamiento;
+	char confederacionGuardarBinario[30];
+	char confederacionCargarBinario[30];
 	char confirmar[2];
 	int flagGuardarArchivos = 0;
 	int flagCambios = 0;
@@ -89,10 +95,48 @@ int main(){
 				case 5:
 					if(ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0){
 
-						if(!menuListar(listaJugadores, listaSelecciones)){
+						do{
+							menuListados();
 
-							printf("ERROR al mostrar el menu\n");
-						}
+							if(utn_getNumero(&opcionListar, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 4,5)){
+
+								switch(opcionListar){
+
+								case 1:
+									if(!controller_listarJugadoresConSeleccion(listaJugadores, listaSelecciones)){
+
+										printf("ERROR al listar los jugadores\n");
+										break;
+									}
+									break;
+
+								case 2:
+									if(!controller_listarSelecciones(listaSelecciones)){
+
+										printf("ERROR al listar las selecciones\n");
+										break;
+									}
+									break;
+
+								case 3:
+									if(!controller_ListarConvocados(listaJugadores, listaSelecciones)){
+
+										printf("ERROR al listar los convocados\n");
+										break;
+									}
+									break;
+
+								case 4:
+									printf("Sera redirigido al menu principal\n");
+									break;
+								}
+							}else{
+
+								printf("Supero la cantidad de reintentos...\n sera redirigido al menu principal\n");
+								break;
+							}
+
+						}while(opcionListar != 4);
 					}else{
 
 						printf("No hay nada para mostrar, debe cargar los archivos previamente\n");
@@ -102,10 +146,46 @@ int main(){
 				case 6:
 					if(ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0){
 
-						if(!menuConvocarJugadores(listaJugadores, listaSelecciones)){
+						do{
+							menuConvocados();
+							if(utn_getNumero(&opcionConvocar, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 3, 5)){
 
-							printf("El jugador ya esta convocado\n");
-						}
+								switch(opcionConvocar){
+
+								case 1:
+									if(controller_ConvocarJugadores(listaSelecciones, listaJugadores)){
+
+										printf("Se convoco exitosamente\n");
+
+									}else{
+
+										break;
+									}
+									break;
+
+								case 2:
+									if(controller_removerJugadorDeSeleccion(listaSelecciones, listaJugadores)){
+
+										printf("Se removio exitosamente\n");
+
+									}else{
+
+										printf("ERROR, reintente nuevamente\n");
+										break;
+									}
+									break;
+
+								case 3:
+									printf("Sera redirigido al menu principal\n");
+									break;
+								}
+							}else{
+
+								printf("Supero la cantidad de reintentos...\n sera redirigido al menu principal\n");
+								break;
+							}
+						}while(opcionConvocar != 3);
+
 						flagCambios = 1;
 					}else{
 
@@ -116,10 +196,39 @@ int main(){
 				case 7:
 					if(ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0){
 
-						if(!menuOrdenarListar(listaJugadores, listaSelecciones)){
+						do{
 
-							printf("ERROR al mostrar el menu\n");
-						}
+							menuOrdenar();
+							if(utn_getNumero(&opcionOrdenamiento,"\nOpcion: " ,
+							"Error ingrese las opciones que se muestran en el menu\n", 1,3,5)){
+
+								switch(opcionOrdenamiento){
+
+								case 1:
+									if(!controller_ordenarJugadores(listaJugadores)){
+
+										printf("Falla al entrar al menu\n");
+										break;
+
+									}
+									break;
+								case 2:
+									if(!controller_ordenarSelecciones(listaSelecciones)){
+
+										printf("Falla al entrar al menu\n");
+										break;
+									}
+									break;
+								case 3:
+									printf("Sera redirigido al menu principal\n");
+									break;
+								}
+							}else{
+
+								printf("Supero la cantidad de reintentos...\n sera redirigido al menu principal\n");
+								break;
+							}
+						}while(opcionOrdenamiento != 3);
 						flagCambios = 1;
 					}else{
 
@@ -130,10 +239,83 @@ int main(){
 				case 8:
 					if(ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0){
 
-						if(!menuGuardarBinario(listaJugadores, listaSelecciones)){
+						do{
 
-							printf("ERROR al mostrar el menu\n");
-						}
+							menuArchivoBinario();
+							if(utn_getNumero(&opcionGuardarBinario, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 6, 5)){
+
+								switch(opcionGuardarBinario){
+
+								case 1:
+									strncpy(confederacionGuardarBinario, "AFC", 30);
+									if(controller_guardarJugadorPorConfederacionBinario("AFC.bin", listaJugadores,
+																				listaSelecciones, confederacionGuardarBinario)){
+										printf("Se guardo el archivo correctamente 'AFC.bin' \n");
+
+									}else{
+
+										printf("No hay jugadores convocados de la confederacion elegida\n");
+									}
+									break;
+
+								case 2:
+									strncpy(confederacionGuardarBinario, "CAF", 30);
+									if(controller_guardarJugadorPorConfederacionBinario("CAF.bin", listaJugadores,
+																					listaSelecciones, confederacionGuardarBinario)){
+										printf("Se guardo el archivo correctamente 'CAF.bin' \n");
+
+									}else{
+
+										printf("No hay jugadores convocados de la confederacion elegida\n");
+									}
+									break;
+
+								case 3:
+									strncpy(confederacionGuardarBinario, "CONCACAF", 30);
+									if(controller_guardarJugadorPorConfederacionBinario("CONCACAF.bin", listaJugadores,
+																					listaSelecciones, confederacionGuardarBinario)){
+										printf("Se guardo el archivo correctamente 'CONCACAF.bin' \n");
+
+									}else{
+
+										printf("No hay jugadores convocados de la confederacion elegida\n");
+									}
+									break;
+
+								case 4:
+									strncpy(confederacionGuardarBinario, "CONMEBOL", 30);
+									if(controller_guardarJugadorPorConfederacionBinario("CONMEBOL.bin", listaJugadores,
+																				listaSelecciones, confederacionGuardarBinario)){
+										printf("Se guardo el archivo correctamente 'CONMEBOL.bin' \n");
+
+									}else{
+
+										printf("No hay jugadores convocados de la confederacion elegida\n");
+									}
+									break;
+
+								case 5:
+									strncpy(confederacionGuardarBinario, "UEFA", 30);
+									if(controller_guardarJugadorPorConfederacionBinario("UEFA.bin", listaJugadores,
+																					listaSelecciones, confederacionGuardarBinario)){
+										printf("Se guardo el archivo correctamente 'UEFA.bin' \n");
+
+									}else{
+
+										printf("No hay jugadores convocados de la confederacion elegida\n");
+									}
+									break;
+
+								case 6:
+									printf("Sera redirigido al menu principal\n");
+									break;
+								}
+							}else{
+
+								printf("Supero la cantidad de reintentos...\n sera redirigido al menu principal\n");
+								break;
+							}
+						}while(opcionGuardarBinario != 6);
 
 					}else{
 
@@ -143,10 +325,90 @@ int main(){
 
 				case 9:
 					if(ll_isEmpty(listaJugadores) == 0 && ll_isEmpty(listaSelecciones) == 0){
-						if(!menuCargarBinario(listaJugadores, listaSelecciones)){
 
-							printf("ERROR al mostrar el menu\n");
-						}
+						do{
+
+							menuArchivoBinario();
+							if(utn_getNumero(&opcionCargarBinario, "\nOpcion: ", "Opcion no valida\nREINGRESE: ", 1, 6, 5)){
+
+								switch(opcionCargarBinario){
+
+								case 1:
+									strncpy(confederacionCargarBinario, "AFC", 30);
+									if(controller_cargarJugadoresPorConfederacionBinario("AFC.bin", listaJugadores,
+																					listaSelecciones, confederacionCargarBinario)){
+
+										printf("\tLista de jugadores convocados por 'AFC' \n\n");
+
+									}else{
+
+										printf("No hay jugadores convocados de la confederacion elegida\n");
+
+									}
+									break;
+
+								case 2:
+									strncpy(confederacionCargarBinario, "CAF", 30);
+									if(controller_cargarJugadoresPorConfederacionBinario("CAF.bin", listaJugadores,
+																					listaSelecciones, confederacionCargarBinario)){
+
+										printf("\tLista de jugadores convocados por 'CAF' \n\n");
+									}else{
+
+										printf("No hay jugadores convocados de la confederacion elegida\n");
+
+									}
+									break;
+
+								case 3:
+									strncpy(confederacionCargarBinario, "CONCACAF", 30);
+									if(controller_cargarJugadoresPorConfederacionBinario("CONCACAF.bin", listaJugadores,
+																					listaSelecciones, confederacionCargarBinario)){
+
+										printf("\tLista de jugadores convocados por 'CONCACAF' \n\n");
+									}else{
+
+										printf("No hay jugadores convocados de la confederacion elegida\n");
+
+									}
+									break;
+
+								case 4:
+									strncpy(confederacionCargarBinario, "CONMEBOL", 30);
+									if(controller_cargarJugadoresPorConfederacionBinario("CONMEBOL.bin", listaJugadores,
+																				listaSelecciones, confederacionCargarBinario)){
+
+										printf("\tLista de jugadores convocados por 'CONMEBOL' \n\n");
+									}else{
+
+										printf("No hay jugadores convocados de la confederacion elegida\n");
+
+									}
+									break;
+
+								case 5:
+									strncpy(confederacionCargarBinario, "UEFA", 30);
+									if(controller_cargarJugadoresPorConfederacionBinario("UEFA.bin", listaJugadores,
+																					listaSelecciones, confederacionCargarBinario)){
+
+										printf("\tLista de jugadores convocados por 'UEFA' \n\n");
+									}else{
+
+										printf("No hay jugadores convocados de la confederacion elegida\n");
+
+									}
+									break;
+
+								case 6:
+									printf("Sera redirigido al menu principal\n");
+									break;
+								}
+							}else{
+
+								printf("Supero la cantidad de reintentos, sera redirigido al menu principal\n");
+								break;
+							}
+						}while(opcionCargarBinario != 6);
 					}else{
 
 						printf("Debera de guardar una archivo binario previamente\n");
@@ -160,16 +422,12 @@ int main(){
 						&& controller_guardarJugadoresModoTexto("jugadores.csv", listaJugadores)){
 
 							flagGuardarArchivos = 1;
+							flagCambios = 0;
 							ll_clear(listaJugadores);
 							ll_clear(listaSelecciones);
-						}
-
-						ultimoId = idAutoincremental()-1;
-
-						if(controller_guardarIdAutoincremental("ID.csv", ultimoId)){
 
 							printf("Se Guardaron todos los archivos correctamente\n"
-								   "Si desea volver a manipular datos, debera volver a cargar los archivos\n");
+						    "Si desea volver a manipular datos, debera volver a cargar los archivos\n");
 						}
 					}else{
 
@@ -177,7 +435,7 @@ int main(){
 					}
 					break;
 				case 11:
-						if(flagGuardarArchivos == 0 && flagCambios == 0){
+						if(flagGuardarArchivos == 1 && flagCambios == 0){
 
 							if(!utn_getNombre(confirmar, 3, "\nIngrese 'Si' si desea finalizar el programa: ",
 								"No ingreso algo correcto\nReintente....\n", 3)){

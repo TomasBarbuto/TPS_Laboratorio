@@ -114,6 +114,7 @@ int controller_agregarJugador(LinkedList* pArrayListJugador){
 			 }else{
 
 				 jug_delete(NuevoJugador);
+				 retorno = 0;
 			 }
 		}
 	}
@@ -331,6 +332,8 @@ int controller_removerJugador(LinkedList* pArrayListJugador, LinkedList* pArrayL
 					retorno = 0;
 					printf("No existe tal ID\nSera redirigido al menu principal\n");
 				}
+			}else{
+				 retorno = 0;
 			}
 		}
 	}
@@ -1018,7 +1021,7 @@ int controller_guardarIdAutoincremental(char* path, int ultimoId){
 
 			retornoFprintf = fprintf(pArchivo, "%d\n", ultimoId);
 
-			if(retornoFprintf == sizeof(ultimoId)){
+			if(retornoFprintf > 0){
 
 				retorno = 1;
 			}
@@ -1298,4 +1301,262 @@ int buscarIdMaximo(LinkedList* pArrayListJugador){
 	}
 
 	return retornoId;
+}
+
+/**
+ * \brief imprime un jugador extraido de un puntero a linkedList.
+ * \param puntero a linkedList, int.
+ * \return int 1 Bien, 0 ERROR.
+**/
+int imprimirJugador(LinkedList* pArrayListaJugadores, int index){
+
+	int retorno = 0;
+	int auxId;
+	char auxNombreCompleto[100];
+	int auxEdad;
+	char auxPosicion[30];
+	char auxNacionalidad[30];
+	Jugador* unJugador = NULL;
+
+	if(pArrayListaJugadores != NULL && index >= 0 && index < ll_len(pArrayListaJugadores)){
+
+		unJugador = (Jugador*)ll_get(pArrayListaJugadores, index);
+
+		if(unJugador != NULL){
+
+			if(jug_getId(unJugador, &auxId)
+			&& jug_getNombreCompleto(unJugador, auxNombreCompleto)
+			&& jug_getEdad(unJugador, &auxEdad)
+			&& jug_getPosicion(unJugador, auxPosicion)
+			&& jug_getNacionalidad(unJugador, auxNacionalidad)){
+
+				printf("|%10d | %25s | %10d | %20s | %15s |\n", auxId, auxNombreCompleto, auxEdad,
+																auxPosicion,auxNacionalidad);
+				retorno = 1;
+			}
+		}
+	}
+	return retorno;
+}
+
+/**
+ * \brief valida existencia de un dato de tipo jugador en puntero a linkedList.
+ * \param puntero a linkedList, int
+ * \return int, -1 ERROR, >= 0 indice.
+**/
+int validarExistenciaDeJugador(LinkedList* pArrayJugadores, int idParam){
+
+	int retorno = -1;
+	int idDeJugador;
+	Jugador* unJugador = NULL;
+
+	if(pArrayJugadores != NULL){
+
+		for(int i = 0; i < ll_len(pArrayJugadores); i++){
+
+			unJugador = (Jugador*) ll_get(pArrayJugadores, i);
+
+			if(unJugador != NULL){
+
+				if(jug_getId(unJugador, &idDeJugador)){
+
+					if(idDeJugador == idParam){
+
+						retorno = ll_indexOf(pArrayJugadores, unJugador);
+						break; //Retorno el index.
+					}
+				}
+			}
+		}
+	}
+	return retorno;
+}
+
+/**
+ * \brief imprime un dato de tipo jugador, con su correspondiente seleccion.
+ * \param puntero a linkedlist, puntero a linkedlist, int
+ * \return int, 1 bien, 0 ERROR.
+**/
+int imprimirJugadorSeleccion(LinkedList* pArrayListaJugadores, LinkedList* pArrayListaSeleccion, int index){
+
+	int retorno = 0;
+	int auxId;
+	char auxNombreCompleto[100];
+	int auxEdad;
+	char auxPosicion[30];
+	char auxNacionalidad[30];
+	char auxSeleccion[30];
+	char pAuxSeleccion[30];
+	int auxIntSeleccion;
+	Jugador* unJugador = NULL;
+
+	if(pArrayListaJugadores != NULL && index >= 0 && index < ll_len(pArrayListaJugadores)
+	&& pArrayListaSeleccion != NULL){
+
+		unJugador = (Jugador*) ll_get(pArrayListaJugadores, index);
+
+		if(unJugador != NULL){
+
+			if(jug_getId(unJugador, &auxId)
+			&& jug_getNombreCompleto(unJugador, auxNombreCompleto)
+			&& jug_getEdad(unJugador, &auxEdad)
+			&& jug_getPosicion(unJugador, auxPosicion)
+			&& jug_getNacionalidad(unJugador, auxNacionalidad)
+			&& jug_getIdSeleccion(unJugador, &auxIntSeleccion)){
+
+				if(auxIntSeleccion > 0
+				&& buscarNombreDeSeleccion(pArrayListaSeleccion, auxIntSeleccion, pAuxSeleccion)){
+
+					strncpy(auxSeleccion, pAuxSeleccion, 30);
+
+				}else{
+
+					strncpy(auxSeleccion, "NO CONVOCADO", 30);
+				}
+
+					printf("|%10d | %25s | %10d | %20s | %15s | %20s |\n", auxId, auxNombreCompleto, auxEdad,
+																	auxPosicion, auxNacionalidad, auxSeleccion);
+					retorno = 1;
+			}
+		}
+	}
+	return retorno;
+}
+
+/**
+ * \brief imprime una seleccion extraida de un puntero a linkedList.
+ * \param puntero a linkedList, int.
+ * \return int 1 Bien, 0 ERROR.
+**/
+int imprimirSeleccion(LinkedList* pArrayListaSelecciones, int index){
+
+	int retorno = 0;
+	int auxId;
+	char auxPais[30];
+	char auxConfederacion[30];
+	int auxConvocados;
+
+	Seleccion* unaSeleccion = NULL;
+
+	if(pArrayListaSelecciones != NULL && index >= 0 && index < ll_len(pArrayListaSelecciones)){
+
+		unaSeleccion = (Seleccion*) ll_get(pArrayListaSelecciones, index);
+
+		if(unaSeleccion != NULL){
+
+			if(selec_getId(unaSeleccion, &auxId)
+			&& selec_getConvocados(unaSeleccion, &auxConvocados)
+			&& selec_getConfederacion(unaSeleccion, auxConfederacion)
+			&& selec_getPais(unaSeleccion, auxPais)){
+
+				printf("|%10d | %25s | %10d | %20s |\n", auxId, auxConfederacion, auxConvocados, auxPais);
+				retorno = 1;
+			}
+		}
+	}
+	return retorno;
+}
+
+/**
+ * \brief valida existencia de un dato de tipo seleccion en puntero a linkedList.
+ * \param puntero a linkedList, int
+ * \return int, -1 ERROR, >= 0 indice.
+**/
+int validarExistenciaDeSeleccion(LinkedList* pArrayListaSelecciones, int idParam){
+
+	int retorno = -1;
+	int idDeSeleccion;
+	Seleccion* unaSeleccion = NULL;
+
+	if(pArrayListaSelecciones != NULL){
+
+		for(int i = 0; i < ll_len(pArrayListaSelecciones); i++){
+
+			unaSeleccion = (Seleccion*)ll_get(pArrayListaSelecciones, i);
+
+			if(unaSeleccion != NULL){
+
+				if(selec_getId(unaSeleccion, &idDeSeleccion)){
+
+					if(idDeSeleccion == idParam){
+
+						retorno = ll_indexOf(pArrayListaSelecciones, unaSeleccion);
+						break; //Retorno el index.
+					}
+				}
+			}
+		}
+	}
+	return retorno;
+}
+
+/**
+ * \brief obtiene el string del nombre de la confederacion a la que pertenece cada seleccion.
+ * \param linkedList* pArrayListSeleccion, int, puntero a char.
+ * \return int 1 Bien, 0 ERROR.
+**/
+int buscarNombreDeConfederacion(LinkedList *pArrayListSeleccion, int idSeleccion, char pConfederacion[]){
+
+	int retorno = 0;
+	int auxIdSeleccion;
+	char auxConfederacion[30];
+	Seleccion* auxSeleccion = NULL;
+
+	if (pArrayListSeleccion != NULL && pConfederacion != NULL && idSeleccion > 0){
+
+		for (int i = 0; i < ll_len(pArrayListSeleccion); i++){
+
+			auxSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, i);
+
+			if (auxSeleccion != NULL){
+
+				if (selec_getId(auxSeleccion, &auxIdSeleccion)){
+
+					if (auxIdSeleccion == idSeleccion
+					&& selec_getConfederacion(auxSeleccion, auxConfederacion)){
+
+						strncpy(pConfederacion, auxConfederacion, 30);
+						retorno = 1;
+					}
+				}
+			}
+		}
+	}
+	return retorno;
+}
+
+
+/**
+ * \brief obtiene el string del nombre de la seleccion segun el id.
+ * \param linkedList* pArrayListSeleccion, int, puntero a char.
+ * \return int 1 Bien, 0 ERROR.
+**/
+int buscarNombreDeSeleccion(LinkedList *pArrayListSeleccion, int idSeleccion, char pSeleccion[]){
+
+	int retorno = 0;
+	int auxIdSeleccion;
+	char auxNombreSeleccion[30];
+	Seleccion* auxSeleccion = NULL;
+
+	if (pArrayListSeleccion != NULL && idSeleccion > 0 && pSeleccion != NULL ){
+
+		for (int i = 0; i < ll_len(pArrayListSeleccion); i++){
+
+			auxSeleccion = (Seleccion*) ll_get(pArrayListSeleccion, i);
+
+			if (auxSeleccion != NULL){
+
+				if (selec_getId(auxSeleccion, &auxIdSeleccion)){
+
+					if (auxIdSeleccion == idSeleccion
+					&& selec_getPais(auxSeleccion, auxNombreSeleccion)){
+
+						strncpy(pSeleccion, auxNombreSeleccion, 30);
+						retorno = 1;
+					}
+				}
+			}
+		}
+	}
+	return retorno;
 }
