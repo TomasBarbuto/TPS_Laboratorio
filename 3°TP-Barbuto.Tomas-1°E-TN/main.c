@@ -16,6 +16,7 @@ int main(){
 	int opcionGuardarBinario;
 	int opcionCargarBinario;
 	int opcionOrdenamiento;
+	int ultimoId;
 	char confederacionGuardarBinario[30];
 	char confederacionCargarBinario[30];
 	char confirmar[2];
@@ -421,13 +422,21 @@ int main(){
 						if(controller_guardarSeleccionesModoTexto("selecciones.csv", listaSelecciones)
 						&& controller_guardarJugadoresModoTexto("jugadores.csv", listaJugadores)){
 
-							flagGuardarArchivos = 1;
-							flagCambios = 0;
-							ll_clear(listaJugadores);
-							ll_clear(listaSelecciones);
+							ultimoId = idAutoincremental()-1;
 
-							printf("Se Guardaron todos los archivos correctamente\n"
-						    "Si desea volver a manipular datos, debera volver a cargar los archivos\n");
+							if(controller_guardarIdAutoincremental("ID.csv", ultimoId)){
+
+								flagGuardarArchivos = 1;
+								flagCambios = 0;
+
+								if(ll_clear(listaJugadores) == 0
+								&& ll_clear(listaSelecciones) == 0){
+
+								}
+
+								printf("Se Guardaron todos los archivos correctamente\n"
+								"Si desea volver a manipular datos, debera volver a cargar los archivos\n");
+							}
 						}
 					}else{
 

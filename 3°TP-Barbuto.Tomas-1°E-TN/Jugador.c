@@ -298,22 +298,22 @@ int jug_getIdSeleccion(Jugador* this, int* idSeleccion){
  * \param VOID
  * \return int 1 Bien, 0 ERROR.
 **/
-int idAutoincremental(){ // Atomizar esta funcion y poner mas lindo todo es un asco PA!!!.
+int idAutoincremental(){
 
 	static int idJugador;
+	static int bandera = 0;
 	char auxId[1000];
 
-	if(controller_cargarIdAutoincremental("ID.csv", auxId)){
+	if(bandera == 0){
 
-		idJugador = atoi(auxId);
+		if(controller_cargarIdAutoincremental("ID.csv", auxId)){
+
+			bandera = 1;
+			idJugador = atoi(auxId);
+		}
 	}
 
 	idJugador++;
-
-	if(!controller_guardarIdAutoincremental("ID.csv", idJugador)){
-
-		printf("No guardo ningun ID\n");
-	}
 
 	return idJugador;
 }
