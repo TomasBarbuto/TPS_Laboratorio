@@ -66,7 +66,6 @@ int main(void) {
 
 					printf("Ya no hay espacio para cargar mas jugadores\n");
 				}
-				system("pause");
 				break;
 
 			case 2:
@@ -85,7 +84,6 @@ int main(void) {
 				}else{
 					printf("Aun no hay jugadores cargados\n");
 				}
-				system("pause");
 				break;
 
 			case 3:
@@ -105,7 +103,6 @@ int main(void) {
 					printf("Aun no hay jugadores cargados\n");
 
 				}
-				system("pause");
 				break;
 
 			case 4:
@@ -128,7 +125,6 @@ int main(void) {
 
 									printf("Ocurrio un error, llame al departamento de sistemas\n");
 								}
-								system("pause");
 								break;
 							case 2:
 								if(jugadoresPorConfederacion(arrayJugadores, arrayConfederaciones,
@@ -137,7 +133,6 @@ int main(void) {
 								}else{
 									printf("Ocurrio un error, llame al departamento de sistemas\n");
 								}
-								system("pause");
 
 								break;
 							case 3:
@@ -147,7 +142,6 @@ int main(void) {
 
 									printf("Ocurrio un error, llame al departamento de sistemas\n");
 								}
-								system("pause");
 								break;
 							case 4:
 								if(confederacionConMayorAniosDeContratos(arrayJugadores, arrayConfederaciones,
@@ -157,7 +151,7 @@ int main(void) {
 
 									printf("Ocurrio un error, llame al departamento de sistemas\n");
 								}
-								system("pause");
+
 								break;
 							case 5:
 								if(porcentajeDeJugadoresPorConfederacion(arrayJugadores, arrayConfederaciones,
@@ -167,7 +161,7 @@ int main(void) {
 
 									printf("Ocurrio un error, llame al departamento de sistemas\n");
 								}
-								system("pause");
+
 								break;
 							case 6:
 								if(regionMasJugadores(arrayJugadores, arrayConfederaciones, CANT_CONFEDERACIONES,
@@ -177,7 +171,7 @@ int main(void) {
 
 									printf("Ocurrio un error, llame al departamento de sistemas\n");
 								}
-								system("pause");
+
 								break;
 
 							case 7:
@@ -196,7 +190,7 @@ int main(void) {
 
 					printf("Aun no hay jugadores cargados\n");
 				}
-				system("pause");
+
 				break;
 
 			case 5:

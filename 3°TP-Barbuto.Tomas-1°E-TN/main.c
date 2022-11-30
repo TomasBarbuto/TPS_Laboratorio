@@ -56,6 +56,9 @@ int main(){
 						if(controller_agregarJugador(listaJugadores)){
 							flagCambios = 1;
 							printf("Se agrego un jugador correctamente\n");
+						}else{
+
+							printf("Algun campo fallo al querer dar de alta un jugador, REINTENTE...\n");
 						}
 					}else{
 
@@ -86,6 +89,9 @@ int main(){
 						if(controller_removerJugador(listaJugadores,listaSelecciones)){
 							flagCambios = 1;
 							printf("Se elimino un jugador\n");
+						}else{
+
+							printf("No se elimino ningun jugador..\n");
 						}
 					}else{
 

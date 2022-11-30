@@ -109,7 +109,7 @@ int darAltaJugador(eJugador arrayJugadores[], eConfederacion arrayConfederacione
 		if(indice != -1){
 
 			if(utn_getNombre(auxJugador.nombre, 50, "\nIngrese Nombre: ",
-					"\nSupero los caracteres aceptados\n", 5) &&
+					"\nSupero los caracteres aceptados o no ingreso algo valido...\n", 5) &&
 				seleccionarPosicion(auxJugador.posicion) &&
 				utn_getNumeroShort(&auxJugador.numeroCamiseta, "\nIngrese Numero de camiseta entre 1-30: ",
 					   "\nNo es posible ese numero\n", 1, 30, 5) &&
@@ -281,8 +281,9 @@ int modificarJugador(eJugador arrayJugadores[], eConfederacion arrayConfederacio
 					mostrarMenuModificarJugador();
 					if(utn_getNumero(&opcion,"\nOpcion: ", "Opcion no valida", 1, 7, 5)){
 
-						printf("| %5s | %25s | %15s | %15s | %15s | %20s | %15s |\n", "ID", "NOMBRE JUGADOR", "POSICION",
+						printf("| %5s | %25s | %15s | %5s | %10s | %12s | %15s |\n", "ID", "NOMBRE JUGADOR", "POSICION",
 															"N°CAMISETA", "SUELDO", "CONFEDERACION", "AÑOS DE CONTRATO");
+
 						mostrarDatoJugador(arrayJugadores[indice], arrayConfederaciones, longitudConfederaciones);
 						switch (opcion) {
 
